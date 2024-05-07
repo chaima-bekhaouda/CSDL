@@ -1,12 +1,14 @@
 #include <iostream>
+#include <string>
 #include <vector>
 #include <fstream> // TEMPORARY !!!!
+#include "gol_elements.hpp"
 #include "gol_algorithm.hpp"
 
 
 int main() {
     /*
-    std::vector<std::vector<Cell>> matrix({
+    std::vector<std::vector<struct Cell>> matrix({
         {{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}},
         {{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}},
         {{0, 0}, {0, 0}, {1, 0}, {1, 0}, {1, 0}, {0, 0}, {0, 0}},
@@ -31,13 +33,24 @@ int main() {
     file << textFileContent;
     file.close();
     */
+    std::string all;
     std::string line;
     std::ifstream file("default.cells");
+    int lastLineLength = -1;
     while (getline (file, line)) {
-        if (line[0] == '!') {
-            continue;
+        try {
+            if (line[0] == '!') {
+                continue;
+            }
+            if ((line.length() != lastLineLength) && (lastLineLength != -1)) {
+                throw (std::string) "Uneven line lengths";
+            }
+            std::cout << line << ' ' << line.length() << '\n';
+            lastLineLength = line.length();
+        } catch (std::string e) {
+            std::cerr << e << std::endl;
+            return 1;
         }
-        std::cout << line << ' ' << line.length() << '\n';
     };
     file.close();
     return 0;

@@ -1,8 +1,9 @@
 #include <vector>
+#include "gol_elements.hpp"
 #include "gol_algorithm.hpp"
 
 
-int getNeighborsCount(int y, int x, std::vector<std::vector<Cell>> matrix) {
+int getNeighborsCount(int y, int x, std::vector<std::vector<struct Cell>> matrix) {
     int neighborsCount = 0;
     for (int _y = -1; _y <= 1; _y++) {
         for (int _x = -1; _x <= 1; _x++) {
@@ -35,7 +36,7 @@ bool willDie(int neighborsCount) {
     return !(2 <= neighborsCount && neighborsCount <= 3);
 }
 
-void setNextStates(std::vector<std::vector<Cell>>& matrix) {
+void setNextStates(std::vector<std::vector<struct Cell>>& matrix) {
     for (int y = 0; y < matrix.size(); y++) {
         for (int x = 0; x < matrix[y].size(); x++) {
             int neighborsCount = getNeighborsCount(y, x, matrix);
@@ -53,7 +54,7 @@ void setNextStates(std::vector<std::vector<Cell>>& matrix) {
 }
 
 
-void setCurrentStates(std::vector<std::vector<Cell>>& matrix) {
+void setCurrentStates(std::vector<std::vector<struct Cell>>& matrix) {
     for (int y = 0; y < matrix.size(); y++) {
         for (int x = 0; x < matrix[y].size(); x++) {
             matrix[y][x].currentState = matrix[y][x].nextState;
