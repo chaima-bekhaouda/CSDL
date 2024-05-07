@@ -43,11 +43,11 @@ std::string readGridFile(std::string fileName) {
         }
         /*
         if ((line.length() != lastLineLength) && (lastLineLength != -1)) {
-            throw (std::string) "Uneven line lengths";
+            "Uneven line lengths";
         }
         for (int i; i < line.size(); i++) {
             if ((line[i] != '.') || (line[i] != 'O')) {
-                throw (std::string) "Invalid character";
+                "Invalid character";
             }
         }
         */
@@ -56,4 +56,20 @@ std::string readGridFile(std::string fileName) {
     };
 
     return fileContent.str();
+}
+
+std::vector<std::vector<struct Cell>> loadGrid(std::string gridString) {
+    std::vector<std::vector<struct Cell>> matrix;
+    matrix.emplace_back();
+
+    int y = 0;
+    for (int i = 0; i < gridString.size(); i++) {
+        switch (gridString[i]) {
+            case '.': matrix[y].emplace_back(Cell{0, 0}); break;
+            case 'O': matrix[y].emplace_back(Cell{1, 0}); break;
+            case '\n': y++; matrix.emplace_back(); break;
+        };
+    };
+
+    return matrix;
 }
