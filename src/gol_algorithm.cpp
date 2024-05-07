@@ -34,3 +34,20 @@ bool willBeBorn(bool cellCurrentState, int neighborsCount) {
 bool willDie(int neighborsCount) {
     return !(2 <= neighborsCount && neighborsCount <= 3);
 }
+
+void setNewStates(std::vector<std::vector<Cell>>& matrix) {
+    for (int y = 0; y < matrix.size(); y++) {
+        for (int x = 0; x < matrix[y].size(); x++) {
+            int neighborsCount = getNeighborsCount(y, x, matrix);
+            if (willBeBorn(matrix[y][x].currentState, neighborsCount)) {
+                matrix[y][x].nextState = 1;
+            } else if (
+                !(willDie(neighborsCount))
+            ) {
+                matrix[y][x].nextState = 0;
+            } else {
+                matrix[y][x].nextState = matrix[y][x].currentState;
+            };
+        };
+    };
+}
