@@ -26,3 +26,7 @@ getNeighborsCount(int y, int x, std::vector<std::vector<Cell>> matrix) {
 
     return neighborsCount;
 }
+
+bool willBeBorn(bool cellCurrentState, int neighborsCount) {
+    return (cellCurrentState == 0 && neighborsCount == 3);
+}
