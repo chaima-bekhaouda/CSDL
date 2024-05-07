@@ -51,3 +51,12 @@ void setNextStates(std::vector<std::vector<Cell>>& matrix) {
         };
     };
 }
+
+
+void setCurrentStates(std::vector<std::vector<Cell>>& matrix) {
+    for (int y = 0; y < matrix.size(); y++) {
+        for (int x = 0; x < matrix[y].size(); x++) {
+            matrix[y][x].currentState = matrix[y][x].nextState;
+        };
+    };
+}
