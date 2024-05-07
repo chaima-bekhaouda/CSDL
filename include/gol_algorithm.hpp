@@ -7,7 +7,7 @@ struct Cell {
 };
 typedef Cell Cell;
 
-std::vector<std::vector<Cell>> matrix;
+extern std::vector<std::vector<Cell>> matrix;
 
 int getNeighborsCount(int y, int x, std::vector<std::vector<Cell>> matrix);
 bool willBeBorn(bool cellCurrentState, int neighborsCount);

@@ -19,7 +19,7 @@ int getNeighborsCount(int y, int x, std::vector<std::vector<Cell>> matrix) {
             };
             // If cell is alive
             if (matrix[y + _y][x + _x].currentState == 1) {
-                neighbors += 1;
+                neighborsCount += 1;
             }
         };
     };
