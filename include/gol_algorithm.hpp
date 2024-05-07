@@ -9,9 +9,9 @@ typedef Cell Cell;
 
 std::vector<std::vector<Cell>> matrix;
 
-getNeighborsCount(int y, int x, <std::vector<std::vector<Cell>> matrix);
-willBeBorn(bool cellCurrentState, int neighborsCount);
-willDie(int neighborsCount);
-setNewStates(std::vector<std::vector<Cell>>& matrix);
+int getNeighborsCount(int y, int x, <std::vector<std::vector<Cell>> matrix);
+bool willBeBorn(bool cellCurrentState, int neighborsCount);
+bool willDie(int neighborsCount);
+void setNewStates(std::vector<std::vector<Cell>>& matrix);
 
-setCurrentStates(std::vector<std::vector<Cell>>& matrix);
+void setCurrentStates(std::vector<std::vector<Cell>>& matrix);

@@ -2,7 +2,7 @@
 #include "gol_algorithm.hpp"
 
 
-getNeighborsCount(int y, int x, std::vector<std::vector<Cell>> matrix) {
+int getNeighborsCount(int y, int x, std::vector<std::vector<Cell>> matrix) {
     int neighborsCount = 0;
     for (int _y = -1; _y <= 1; _y++) {
         for (int _x = -1; _x <= 1; _x++) {
