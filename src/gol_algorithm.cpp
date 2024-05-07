@@ -35,7 +35,7 @@ bool willDie(int neighborsCount) {
     return !(2 <= neighborsCount && neighborsCount <= 3);
 }
 
-void setNewStates(std::vector<std::vector<Cell>>& matrix) {
+void setNextStates(std::vector<std::vector<Cell>>& matrix) {
     for (int y = 0; y < matrix.size(); y++) {
         for (int x = 0; x < matrix[y].size(); x++) {
             int neighborsCount = getNeighborsCount(y, x, matrix);
