@@ -30,3 +30,7 @@ getNeighborsCount(int y, int x, std::vector<std::vector<Cell>> matrix) {
 bool willBeBorn(bool cellCurrentState, int neighborsCount) {
     return (cellCurrentState == 0 && neighborsCount == 3);
 }
+
+bool willDie(int neighborsCount) {
+    return !(2 <= neighborsCount && neighborsCount <= 3);
+}
