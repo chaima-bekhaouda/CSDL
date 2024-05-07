@@ -6,3 +6,4 @@
 void saveGrid(
     std::string fileName, std::vector<std::vector<struct Cell>> matrix
 );
+std::string readGridFile(std::string fileName);
