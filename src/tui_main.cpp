@@ -19,6 +19,9 @@ void gridMenu(std::vector<std::vector<struct Cell>>& grid) {
                 setCurrentStates(grid);
                 break;
             case 2:
+                std::string fileName;
+                std::cin >> fileName;
+                saveGrid(fileName, grid);
                 break;
         };
     } while (userGridMenuInput != 3);

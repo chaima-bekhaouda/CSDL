@@ -48,3 +48,7 @@ void displayGridPrompt() {
         << "1) Forwards   2) Save   3) Quit\n"
         << ">> ";
 }
+
+void displaySavePrompt() {
+    std::cout << "Give a name to the saved file: ";
+}

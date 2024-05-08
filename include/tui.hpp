@@ -7,3 +7,4 @@ void displayLoadGridPrompt();
 
 void displayGrid(std::vector<std::vector<struct Cell>> grid);
 void displayGridPrompt();
+void displaySavePrompt();
