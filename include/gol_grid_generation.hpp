@@ -3,4 +3,6 @@
 #include "gol_elements.hpp"
 
 
-void generateGrid(int matrixY, int matrixX, double densityFraction);
+std::vector<std::vector<Cell>> generateGrid(
+    int matrixY, int matrixX, double densityFraction
+);
