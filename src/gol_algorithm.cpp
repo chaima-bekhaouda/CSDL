@@ -43,7 +43,7 @@ void setNextStates(std::vector<std::vector<struct Cell>>& grid) {
             if (willBeBorn(grid[y][x].currentState, neighborsCount)) {
                 grid[y][x].nextState = 1;
             } else if (
-                !(willDie(neighborsCount))
+                (willDie(neighborsCount))
             ) {
                 grid[y][x].nextState = 0;
             } else {
