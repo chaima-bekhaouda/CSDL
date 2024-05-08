@@ -16,6 +16,25 @@ bool doesFileExist(std::string fileName) {
     return fileExists;
 }
 
+bool areLinesEven(std::string fileName) {
+    int lastLineLength = - 1;
+    std::string line;
+
+    std::ifstream file("cells/" + fileName + ".cells");
+    while (getline(file, line)) {
+        if (line[0] == '!') {
+            continue;
+        }
+        if ((line.length() != lastLineLength) && (lastLineLength != -1)) {
+            return false;
+        }
+        lastLineLength = line.length();
+    };
+    file.close();
+
+    return true;
+}
+
 void saveGrid(
     std::string fileName, std::vector<std::vector<struct Cell>> grid
 ) {
@@ -42,7 +61,7 @@ std::string readGridFile(std::string fileName) {
 
     std::ifstream file("cells/" + fileName + ".cells");
 
-    while (getline (file, line)) {
+    while (getline(file, line)) {
         if (line[0] == '!') {
             continue;
         }

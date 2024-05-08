@@ -56,6 +56,9 @@ int main() {
                 if (!doesFileExist(fileName)) {
                     std::cout << "File does not exist\n";
                     break;
+                } else if (!areLinesEven(fileName)) {
+                    std::cout << "Lines are uneven\n";
+                    break;
                 };
 
                 std::string fileContent = readGridFile(fileName);

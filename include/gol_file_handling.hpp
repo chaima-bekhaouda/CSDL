@@ -4,6 +4,7 @@
 
 
 bool doesFileExist(std::string fileName);
+bool areLinesEven(std::string fileName);
 
 void saveGrid(
     std::string fileName, std::vector<std::vector<struct Cell>> grid
