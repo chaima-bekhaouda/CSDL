@@ -7,6 +7,23 @@
 #include "tui.hpp"
 
 
+void gridMenu(std::vector<std::vector<struct Cell>>& grid) {
+    int userGridMenuInput;
+    do {
+        displayGrid(grid);
+        displayGridPrompt();
+        std::cin >> userGridMenuInput;
+        switch (userGridMenuInput) {
+            case 1:
+                setNextStates(grid);
+                setCurrentStates(grid);
+                break;
+            case 2:
+                break;
+        };
+    } while (userGridMenuInput != 3);
+}
+
 int main() {
     std::vector<std::vector<struct Cell>> grid;
     int userMainMenuInput;
@@ -23,7 +40,7 @@ int main() {
                 double densityFraction;
                 std::cin >> densityFraction;
                 grid = generateGrid(gridHeight, gridWidth, densityFraction);
-                displayGrid(grid);
+                gridMenu(grid);
                 break;
             case 2:
                 break;

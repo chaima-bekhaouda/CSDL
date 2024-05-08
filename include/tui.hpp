@@ -3,4 +3,6 @@
 
 void displayMainMenu();
 void displayGenerateGridPrompt();
+
 void displayGrid(std::vector<std::vector<struct Cell>> grid);
+void displayGridPrompt();

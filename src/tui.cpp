@@ -23,8 +23,21 @@ void displayGenerateGridPrompt() {
 void displayGrid(std::vector<std::vector<struct Cell>> grid) {
     for (int y = 0; y < grid.size(); y++) {
         for (int x = 0; x < grid[y].size(); x++) {
-            std::cout << grid[y][x].currentState << ' ';
+            switch (grid[y][x].currentState) {
+                case 0:
+                    std::cout << ". ";
+                    break;
+                case 1:
+                    std::cout << "O ";
+                    break;
+            };
         };
         std::cout << '\n';
     };
-};
+}
+
+void displayGridPrompt() {
+    std::cout
+        << "1) Forwards   2) Save   3) Quit\n"
+        << ">> ";
+}
