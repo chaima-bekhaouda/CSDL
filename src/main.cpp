@@ -7,14 +7,14 @@
 
 
 int main() {
-    std::vector<std::vector<struct Cell>> matrix = generateGrid(10, 10, 0.5);
+    std::vector<std::vector<struct Cell>> grid = generateGrid(10, 10, 0.5);
 
     int totalEmpty = 0;
     int totalFilled = 0;
-    for (int y = 0; y < matrix.size(); y++) {
-        for (int x = 0; x < matrix[y].size(); x++) {
-            std::cout << matrix[y][x].currentState << ' ';
-            switch (matrix[y][x].currentState) {
+    for (int y = 0; y < grid.size(); y++) {
+        for (int x = 0; x < grid[y].size(); x++) {
+            std::cout << grid[y][x].currentState << ' ';
+            switch (grid[y][x].currentState) {
                 case 0: totalEmpty++; break;
                 case 1: totalFilled++; break;
             };

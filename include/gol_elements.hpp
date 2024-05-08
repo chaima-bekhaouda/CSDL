@@ -9,4 +9,4 @@ struct Cell {
 };
 #endif  // CSDL_INCLUDE_GOL_ELEMENTS_H_
 
-extern std::vector<std::vector<struct Cell>> matrix;
+extern std::vector<std::vector<struct Cell>> cell;

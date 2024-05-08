@@ -4,5 +4,5 @@
 
 
 std::vector<std::vector<Cell>> generateGrid(
-    int matrixY, int matrixX, double densityFraction
+    int gridY, int gridX, double densityFraction
 );

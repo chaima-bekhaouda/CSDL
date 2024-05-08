@@ -5,29 +5,29 @@
 
 
 std::vector<std::vector<Cell>> generateGrid(
-    int matrixY, int matrixX, double densityFraction
+    int gridY, int gridX, double densityFraction
 ) {
     srand(time(0));
 
-    int numberOfCells = matrixY * matrixX;
+    int numberOfCells = gridY * gridX;
     int maxFilledCells = numberOfCells * densityFraction;
 
-    std::vector<std::vector<Cell>> matrix (
-        matrixY, std::vector<Cell> (matrixX, {0, 0})
+    std::vector<std::vector<Cell>> grid (
+        gridY, std::vector<Cell> (gridX, {0, 0})
     );
 
     int i = 0;
     while (i != maxFilledCells) {
-        int randomY = rand() % matrixY;
-        int randomX = rand() % matrixX;
+        int randomY = rand() % gridY;
+        int randomX = rand() % gridX;
 
-        if (matrix[randomY][randomX].currentState == 1) {
+        if (grid[randomY][randomX].currentState == 1) {
             continue;
         }
 
-        matrix[randomY][randomX].currentState = 1;
+        grid[randomY][randomX].currentState = 1;
         i++;
     };
 
-    return matrix;
+    return grid;
 }

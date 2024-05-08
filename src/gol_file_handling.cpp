@@ -7,12 +7,12 @@
 
 
 void saveGrid(
-    std::string fileName, std::vector<std::vector<struct Cell>> matrix
+    std::string fileName, std::vector<std::vector<struct Cell>> grid
 ) {
     std::string textFileContent = "!" + fileName + "\n";
-    for (int y = 0; y < matrix.size(); y++) {
-        for (int x = 0; x < matrix.size(); x++) {
-            switch (matrix[y][x].currentState) {
+    for (int y = 0; y < grid.size(); y++) {
+        for (int x = 0; x < grid.size(); x++) {
+            switch (grid[y][x].currentState) {
                 case 0: textFileContent += '.'; break;
                 case 1: textFileContent += 'O'; break;
             };
@@ -59,17 +59,17 @@ std::string readGridFile(std::string fileName) {
 }
 
 std::vector<std::vector<struct Cell>> loadGrid(std::string gridString) {
-    std::vector<std::vector<struct Cell>> matrix;
-    matrix.emplace_back();
+    std::vector<std::vector<struct Cell>> grid;
+    grid.emplace_back();
 
     int y = 0;
     for (int i = 0; i < gridString.size(); i++) {
         switch (gridString[i]) {
-            case '.': matrix[y].emplace_back(Cell{0, 0}); break;
-            case 'O': matrix[y].emplace_back(Cell{1, 0}); break;
-            case '\n': y++; matrix.emplace_back(); break;
+            case '.': grid[y].emplace_back(Cell{0, 0}); break;
+            case 'O': grid[y].emplace_back(Cell{1, 0}); break;
+            case '\n': y++; grid.emplace_back(); break;
         };
     };
 
-    return matrix;
+    return grid;
 }
