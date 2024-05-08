@@ -6,6 +6,16 @@
 #include "gol_elements.hpp"
 
 
+bool doesFileExist(std::string fileName) {
+    bool fileExists;
+
+    std::ifstream file("cells/" + fileName + ".cells");
+    fileExists = file.is_open();
+    file.close();
+
+    return fileExists;
+}
+
 void saveGrid(
     std::string fileName, std::vector<std::vector<struct Cell>> grid
 ) {
@@ -20,7 +30,7 @@ void saveGrid(
         textFileContent += '\n';
     };
 
-    std::ofstream file(fileName + ".cells");
+    std::ofstream file("cells/" + fileName + ".cells");
     file << textFileContent;
     file.close();
 }
@@ -30,12 +40,7 @@ std::string readGridFile(std::string fileName) {
     std::string line;
     int lastLineLength = -1;
 
-    std::ifstream file(fileName + ".cells");
-    /*
-    if (!file.is_open()) {
-        fileName + ".cells " + "does not exist";
-    }
-    */
+    std::ifstream file("cells/" + fileName + ".cells");
 
     while (getline (file, line)) {
         if (line[0] == '!') {
@@ -70,6 +75,7 @@ std::vector<std::vector<struct Cell>> loadGrid(std::string gridString) {
             case '\n': y++; grid.emplace_back(); break;
         };
     };
+    grid.pop_back();
 
     return grid;
 }

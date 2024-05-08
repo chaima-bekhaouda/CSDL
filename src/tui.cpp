@@ -20,6 +20,13 @@ void displayGenerateGridPrompt() {
            "between 0 and 1\n";
 }
 
+void displayLoadGridPrompt() {
+    std::cout
+        << "Please give the case-sensitive name of the .cells file without "
+           "the extensions\n"
+           "(For example, try 'default')\n";
+}
+
 void displayGrid(std::vector<std::vector<struct Cell>> grid) {
     for (int y = 0; y < grid.size(); y++) {
         for (int x = 0; x < grid[y].size(); x++) {
