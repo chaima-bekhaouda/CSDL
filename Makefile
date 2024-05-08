@@ -1,8 +1,8 @@
 CC = g++
 CFLAGS = -I include/
-GOL_SRC = $(wildcard src/gol_*.cpp)
+GOL_SRC = $(wildcard src/gol*.cpp)
 
-TUI_SRC = $(wildcard src/tui_*.cpp)
+TUI_SRC = $(wildcard src/tui*.cpp)
 TUI_EXECUTABLE = game-of-life-tui
 
 
