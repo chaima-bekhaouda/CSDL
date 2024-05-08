@@ -8,9 +8,18 @@
 
 
 int main() {
-    std::vector<std::vector<struct Cell>> grid = generateGrid(10, 10, 0.5);
-
-    displayGrid(grid);
+    std::vector<std::vector<struct Cell>> grid;
+    int userMainMenuInput;
+    do {
+        displayMainMenu();
+        switch (userMainMenuInput) {
+            case 1:
+                break;
+            case 2:
+                break;
+        }
+        std::cin >> userMainMenuInput;
+    } while (userMainMenuInput != 3);
 
     return 0;
 }

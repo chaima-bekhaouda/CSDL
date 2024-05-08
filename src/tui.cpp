@@ -11,3 +11,12 @@ void displayGrid(std::vector<std::vector<Cell>> grid) {
         std::cout << '\n';
     };
 };
+
+void displayMainMenu() {
+    std::cout
+        << "GAME OF LIFE:\n"
+        << "1) Charger une population\n"
+        << "2) Generer une population aleatoirement\n"
+        << "3) Quitter\n"
+        << "Choix: ";
+}
