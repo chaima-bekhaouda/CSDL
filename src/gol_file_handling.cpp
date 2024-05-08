@@ -103,7 +103,9 @@ std::vector<std::vector<struct Cell>> loadGrid(std::string gridString) {
             case '\n': y++; grid.emplace_back(); break;
         };
     };
-    grid.pop_back();
+    if (grid[grid.size() - 1].size() == 0) {
+        grid.pop_back();
+    };
 
     return grid;
 }
