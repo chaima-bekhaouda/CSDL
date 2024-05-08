@@ -1,11 +1,13 @@
 CC = g++
 CFLAGS = -I include/
-SRC = $(wildcard src/*.cpp)
-EXECUTABLE = game-of-life
+GOL_SRC = $(wildcard src/gol_*.cpp)
+
+TUI_SRC = $(wildcard src/tui_*.cpp)
+TUI_EXECUTABLE = game-of-life-tui
 
 
-$(EXECUTABLE): $(SRC)
-	$(CC) $(CFLAGS) $^ -o $@
+tui: $(GOL_SRC) $(TUI_SRC)
+	$(CC) $(CFLAGS) $^ -o $(TUI_EXECUTABLE)
 
 clean:
-	rm -f $(EXECUTABLE)
+	rm -f $(TUI_EXECUTABLE)
