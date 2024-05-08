@@ -1,5 +1,4 @@
-#include <string>
-#include "gol.elements.hpp"
+#include "gol_elements.hpp"
 
 
 void displayGrid(std::vector<std::vector<Cell>> grid);
