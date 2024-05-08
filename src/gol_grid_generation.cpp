@@ -4,7 +4,7 @@
 #include "gol_elements.hpp"
 
 
-std::vector<std::vector<Cell>> generateGrid(
+std::vector<std::vector<struct Cell>> generateGrid(
     int gridY, int gridX, double densityFraction
 ) {
     srand(time(0));
@@ -12,8 +12,8 @@ std::vector<std::vector<Cell>> generateGrid(
     int numberOfCells = gridY * gridX;
     int maxFilledCells = numberOfCells * densityFraction;
 
-    std::vector<std::vector<Cell>> grid (
-        gridY, std::vector<Cell> (gridX, {0, 0})
+    std::vector<std::vector<struct Cell>> grid (
+        gridY, std::vector<struct Cell> (gridX, {0, 0})
     );
 
     int i = 0;

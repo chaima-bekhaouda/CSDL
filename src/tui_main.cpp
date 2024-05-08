@@ -12,13 +12,22 @@ int main() {
     int userMainMenuInput;
     do {
         displayMainMenu();
+        std::cin >> userMainMenuInput;
         switch (userMainMenuInput) {
             case 1:
+                displayGenerateGridPrompt();
+                int gridHeight;
+                std::cin >> gridHeight;
+                int gridWidth;
+                std::cin >> gridWidth;
+                double densityFraction;
+                std::cin >> densityFraction;
+                grid = generateGrid(gridHeight, gridWidth, densityFraction);
+                displayGrid(grid);
                 break;
             case 2:
                 break;
-        }
-        std::cin >> userMainMenuInput;
+        };
     } while (userMainMenuInput != 3);
 
     return 0;
