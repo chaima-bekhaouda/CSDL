@@ -24,11 +24,30 @@ bool areLinesEven(std::string fileName) {
     while (getline(file, line)) {
         if (line[0] == '!') {
             continue;
-        }
+        };
         if ((line.length() != lastLineLength) && (lastLineLength != -1)) {
             return false;
-        }
+        };
         lastLineLength = line.length();
+    };
+    file.close();
+
+    return true;
+}
+
+bool areCharactersValid(std::string fileName) {
+    std::string line;
+
+    std::ifstream file("cells/" + fileName + ".cells");
+    while (getline(file, line)) {
+        if (line[0] == '!') {
+            continue;
+        };
+        for (char character : line) {
+            if ((character != '.') && (character != 'O')) {
+                return false;
+            };
+        };
     };
     file.close();
 
@@ -65,16 +84,6 @@ std::string readGridFile(std::string fileName) {
         if (line[0] == '!') {
             continue;
         }
-        /*
-        if ((line.length() != lastLineLength) && (lastLineLength != -1)) {
-            "Uneven line lengths";
-        }
-        for (int i; i < line.size(); i++) {
-            if ((line[i] != '.') || (line[i] != 'O')) {
-                "Invalid character";
-            }
-        }
-        */
         fileContent << line << '\n';
         lastLineLength = line.length();
     };

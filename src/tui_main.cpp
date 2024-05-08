@@ -59,6 +59,9 @@ int main() {
                 } else if (!areLinesEven(fileName)) {
                     std::cout << "Lines are uneven\n";
                     break;
+                } else if (!areCharactersValid(fileName)) {
+                    std::cout << "Invalid characters\n";
+                    break;
                 };
 
                 std::string fileContent = readGridFile(fileName);
