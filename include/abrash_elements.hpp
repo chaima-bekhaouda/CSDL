@@ -10,4 +10,4 @@ struct Grid {
     std::vector<std::vector<unsigned char>> grid;
     std::vector<std::vector<unsigned char>> temporaryGrid;
 }
-#endif CSDL_INCLUDE_ABRASH_ELEMENTS_H_
+#endif // CSDL_INCLUDE_ABRASH_ELEMENTS_H_
