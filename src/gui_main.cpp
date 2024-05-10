@@ -9,8 +9,10 @@
 
 
 int main() {
-    std::vector<std::vector<struct Cell>> grid;
-    grid = loadGrid(readGridFile("save-test.cells"));
+    std::vector<std::vector<struct Cell>> grid(
+        64,
+        std::vector<struct Cell> (64, {0, 0})
+    );
 
     InitWindow(1024, 720, "The Game Of Life");
 
