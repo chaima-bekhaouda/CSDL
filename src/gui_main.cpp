@@ -1,4 +1,5 @@
-#include <iostream>
+#include <vector>
+#include <cmath>
 #include "raylib.h"
 #include "gui_colors.hpp"
 
@@ -6,12 +7,10 @@
 int main() {
     InitWindow(1024, 720, "The Game Of Life");
 
-    Camera2D camera;
-    camera.target = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
-    camera.offset = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
+    Vector2 screenTopLeft = {0, 0};
+    Vector2 screenBottomRight = {1024, 720};
 
+    bool drawFPS = false;
     bool menuUp = false;
     Texture menuButton = LoadTexture("resources/menu-button.png");
     Rectangle menuButtonSource = {
@@ -27,6 +26,13 @@ int main() {
         (float)menuButton.height
     };
 
+
+    Camera2D camera;
+    camera.target = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
+    camera.offset = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+
     while (!WindowShouldClose()) {
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             if (CheckCollisionPointRec(GetMousePosition(), menuButtonBounds)) {
@@ -34,6 +40,11 @@ int main() {
                 std::cout << menuUp << '\n';
             };
         };
+
+        if (IsKeyPressed(KEY_F)) {
+            drawFPS ? drawFPS = false : drawFPS = true;
+        }
+
 
         if (IsKeyPressed(KEY_R)) {
             camera.target = (Vector2){
@@ -68,11 +79,38 @@ int main() {
             };
         };
 
+        Vector2 worldTopLeft = GetScreenToWorld2D(screenTopLeft, camera);
+        Vector2 worldBottomRight = GetScreenToWorld2D(screenBottomRight, camera);
+
         BeginDrawing();
             ClearBackground(DEEPOCEANBLUE);
 
             BeginMode2D(camera);
-                DrawText("0", 512, 360, 32, RED);
+            /*
+                for (int y = 0; y < whateverMatrix.size(); y++) {
+                    if (
+                        y + 1 < worldTopLeft.y ||
+                        y - 1 > worldBottomRight.y
+                    ) {
+                        continue;
+                    };
+                    for (int x = 0; x < whateverMatrix[y].size(); x++) {
+                        if (
+                            x + 1 < worldTopLeft.x ||
+                            x - 1 > worldBottomRight.x
+                        ) {
+                            continue;
+                        };
+                        DrawRectangle(
+                            x,
+                            y,
+                            1,
+                            1,
+                            Color
+                        );
+                    };
+                };
+            */
             EndMode2D();
 
             DrawTextureRec(
@@ -81,6 +119,7 @@ int main() {
                 (Vector2){menuButtonBounds.x, menuButtonBounds.y},
                 WHITE
             );
+            if (drawFPS) DrawFPS(900, 0);
         EndDrawing();
     };
 
