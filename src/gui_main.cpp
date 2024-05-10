@@ -2,7 +2,7 @@
 #include <vector>
 #include <cmath>
 #include "gol_elements.hpp"
-#include "gol_file_handling.hpp"
+#include "gol_algorithm.hpp"
 #include "raylib.h"
 #include "gui_colors.hpp"
 #define MAX_ZOOM 60.0f
@@ -19,6 +19,8 @@ int main() {
     Vector2 screenTopLeft = {0, 0};
     Vector2 screenBottomRight = {1024, 720};
 
+    int maxTicks = 1;
+    int ticks = 0;
     bool drawFPS = false;
 
     Font jetBrainsMono = LoadFontEx(
@@ -84,6 +86,24 @@ int main() {
     gridLineColor.a = (int)((camera.zoom - 1.0f) / (MAX_ZOOM - 1.0f) * 255.0f);
 
     while (!WindowShouldClose()) {
+        if (play) {
+            if (ticks == 0) {
+                setNextStates(grid);
+                setCurrentStates(grid);
+            }
+            ticks = (ticks + 1 + maxTicks) % maxTicks;
+        };
+
+        if (IsKeyPressed(KEY_LEFT_CONTROL) || IsKeyPressed(KEY_RIGHT_CONTROL)) {
+            maxTicks -= 1;
+            if (maxTicks < 1) maxTicks = 1;
+        } else if (
+            IsKeyPressed(KEY_LEFT_SHIFT) || IsKeyPressed(KEY_RIGHT_SHIFT)
+        ) {
+            maxTicks += 1;
+        };
+
+
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             if (CheckCollisionPointRec(GetMousePosition(), menuButtonBounds)) {
                 menuUp ? menuUp = false : menuUp = true;
@@ -274,7 +294,7 @@ int main() {
                 jetBrainsMono,
                 TextFormat(
                     "delta-time: %d",
-                    1 
+                    maxTicks
                 ),
                 (Vector2){255.9f, 648.8f},
                 26,
