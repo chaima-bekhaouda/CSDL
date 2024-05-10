@@ -55,6 +55,22 @@ int main() {
         (float)menuBar.height
     };
 
+    bool play = false;
+    Texture menuBarPlay = LoadTexture("resources/menu-bar-play.png");
+    Texture menuBarPause = LoadTexture("resources/menu-bar-pause.png");
+    Rectangle menuBarPlayPauseSource = {
+        0,
+        0,
+        (float)menuBarPlay.width,
+        (float)menuBarPlay.height
+    };
+    Rectangle menuBarPlayPauseBounds = {
+        14.0,
+        601.9,
+        (float)menuBarPlay.width,
+        (float)menuBarPlay.height
+    };
+
 
     Camera2D camera;
     camera.target = (Vector2){grid[0].size() / 2.0f, grid.size() / 2.0f};
@@ -70,6 +86,14 @@ int main() {
             if (CheckCollisionPointRec(GetMousePosition(), menuButtonBounds)) {
                 menuUp ? menuUp = false : menuUp = true;
                 std::cout << menuUp << '\n';
+            } else if (CheckCollisionPointRec(
+                GetMousePosition(),
+                menuBarPlayPauseBounds
+            )) {
+                switch (play) {
+                    case false: play = true; break;
+                    case true: play = false; break;
+                }
             } else {
                 Vector2 clickPos = GetScreenToWorld2D(
                     GetMousePosition(),
@@ -198,6 +222,17 @@ int main() {
                 menuBar,
                 menuBarSource,
                 (Vector2){menuBarBounds.x, menuBarBounds.y},
+                WHITE
+            );
+            Texture currentTexture = {};
+            switch (play) {
+                case false: currentTexture = menuBarPlay; break;
+                case true: currentTexture = menuBarPause; break;
+            }
+            DrawTextureRec(
+                currentTexture,
+                menuBarPlayPauseSource,
+                (Vector2){menuBarPlayPauseBounds.x, menuBarPlayPauseBounds.y},
                 WHITE
             );
             DrawTextEx(
