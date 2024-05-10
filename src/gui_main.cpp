@@ -18,6 +18,14 @@ int main() {
     Vector2 screenBottomRight = {1024, 720};
 
     bool drawFPS = false;
+
+    Font jetBrainsMono = LoadFontEx(
+        "resources/JetBrainsMono-Regular.ttf",
+        26,
+        NULL,
+        0
+    );
+
     bool menuUp = false;
     Texture menuButton = LoadTexture("resources/menu-button.png");
     Rectangle menuButtonSource = {
@@ -31,6 +39,20 @@ int main() {
         35,
         (float)menuButton.width, 
         (float)menuButton.height
+    };
+
+    Texture menuBar = LoadTexture("resources/menu-bar.png");
+    Rectangle menuBarSource = {
+        0,
+        0,
+        (float)menuBar.width,
+        (float)menuBar.height
+    };
+    Rectangle menuBarBounds = {
+        -51.5,
+        572.6,
+        (float)menuBar.width,
+        (float)menuBar.height
     };
 
 
@@ -171,6 +193,58 @@ int main() {
                 (Vector2){menuButtonBounds.x, menuButtonBounds.y},
                 WHITE
             );
+
+            DrawTextureRec(
+                menuBar,
+                menuBarSource,
+                (Vector2){menuBarBounds.x, menuBarBounds.y},
+                WHITE
+            );
+            DrawTextEx(
+                jetBrainsMono,
+                TextFormat(
+                    "x: %.2f",
+                    GetScreenToWorld2D(GetMousePosition(), camera).x
+                ),
+                (Vector2){92.0f, 600.1f},
+                26,
+                0,
+                MIDNIGHTBLACK
+            );
+            DrawTextEx(
+                jetBrainsMono,
+                TextFormat(
+                    "y: %.2f",
+                    GetScreenToWorld2D(GetMousePosition(), camera).y
+                ),
+                (Vector2){92.0f, 645.8f},
+                26,
+                0,
+                MIDNIGHTBLACK
+            );
+            DrawTextEx(
+                jetBrainsMono,
+                TextFormat(
+                    "zoom: %.2f",
+                    camera.zoom 
+                ),
+                (Vector2){255.9f, 600.1f},
+                26,
+                0,
+                MIDNIGHTBLACK
+            );
+            DrawTextEx(
+                jetBrainsMono,
+                TextFormat(
+                    "delta-time: %d",
+                    1 
+                ),
+                (Vector2){255.9f, 648.8f},
+                26,
+                0,
+                MIDNIGHTBLACK
+            );
+
             if (drawFPS) DrawFPS(900, 0);
         EndDrawing();
     };
