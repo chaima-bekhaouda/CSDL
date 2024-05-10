@@ -7,7 +7,7 @@
 // 4 bits are for the number of live neighbors (maximum is 0b1000, 8 neighbors)
 // 3 bits are unused
 struct Grid {
-    std::vector<std::vector<unsigned char>> grid;
-    std::vector<std::vector<unsigned char>> temporaryGrid;
-}
+    std::vector<std::vector<unsigned char>> currentGrid;
+    std::vector<std::vector<unsigned char>> nextGrid;
+};
 #endif // CSDL_INCLUDE_ABRASH_ELEMENTS_H_
