@@ -1,5 +1,6 @@
 #include <vector>
 #include <cmath>
+#include "gol_elements.hpp"
 #include "raylib.h"
 #include "gui_colors.hpp"
 
