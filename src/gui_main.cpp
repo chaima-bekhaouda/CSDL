@@ -1,11 +1,17 @@
+#include <iostream>
 #include <vector>
 #include <cmath>
 #include "gol_elements.hpp"
+#include "gol_file_handling.hpp"
 #include "raylib.h"
 #include "gui_colors.hpp"
+#define MAX_ZOOM 60.0f
 
 
 int main() {
+    std::vector<std::vector<struct Cell>> grid;
+    grid = loadGrid(readGridFile("save-test.cells"));
+
     InitWindow(1024, 720, "The Game Of Life");
 
     Vector2 screenTopLeft = {0, 0};
@@ -29,16 +35,39 @@ int main() {
 
 
     Camera2D camera;
-    camera.target = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
+    camera.target = (Vector2){grid[0].size() / 2.0f, grid.size() / 2.0f};
     camera.offset = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
     camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
+    camera.zoom = 10.0f;
+
+    Color gridLineColor = DEEPOCEANBLUE;
+    gridLineColor.a = (int)((camera.zoom - 1.0f) / (MAX_ZOOM - 1.0f) * 255.0f);
 
     while (!WindowShouldClose()) {
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             if (CheckCollisionPointRec(GetMousePosition(), menuButtonBounds)) {
                 menuUp ? menuUp = false : menuUp = true;
                 std::cout << menuUp << '\n';
+            } else {
+                Vector2 clickPos = GetScreenToWorld2D(
+                    GetMousePosition(),
+                    camera
+                );
+                clickPos.x = floor(clickPos.x);
+                clickPos.y = floor(clickPos.y);
+                if (
+                    (0 <= clickPos.x && clickPos.x <= grid[0].size()) &&
+                    (0 <= clickPos.y && clickPos.y <= grid.size())
+                ) {
+                    switch (grid[clickPos.y][clickPos.x].currentState) {
+                        case false:
+                            grid[clickPos.y][clickPos.x].currentState = true;
+                            break;
+                        case true:
+                            grid[clickPos.y][clickPos.x].currentState = false;
+                            break;
+                    }
+                }
             };
         };
 
@@ -49,12 +78,21 @@ int main() {
 
         if (IsKeyPressed(KEY_R)) {
             camera.target = (Vector2){
-                GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f
+                grid[0].size() / 2.0f,
+                grid.size() / 2.0f
             };
             camera.offset = (Vector2){
-                GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f
+                GetScreenWidth() / 2.0f,
+                GetScreenHeight() / 2.0f
             };
-            camera.zoom = 1.0f;
+            camera.rotation = 0.0f;
+            camera.zoom = 10.0f;
+
+            gridLineColor.a = (int)(
+                (camera.zoom - 1.0f)
+                / (MAX_ZOOM - 1.0f)
+                * 255.0f
+            );
         };
 
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
@@ -75,30 +113,44 @@ int main() {
             camera.zoom += mouseWheelMove * 0.25f * camera.zoom;
             if (camera.zoom < 1) {
                 camera.zoom = 1;
-            } else if (camera.zoom > 30) {
-                camera.zoom = 30;
+            } else if (camera.zoom > MAX_ZOOM) {
+                camera.zoom = MAX_ZOOM;
             };
+            gridLineColor.a = (int)(
+                (camera.zoom - 1.0f)
+                / (MAX_ZOOM - 1.0f)
+                * 255.0f
+            );
         };
 
         Vector2 worldTopLeft = GetScreenToWorld2D(screenTopLeft, camera);
         Vector2 worldBottomRight = GetScreenToWorld2D(screenBottomRight, camera);
 
         BeginDrawing();
-            ClearBackground(DEEPOCEANBLUE);
+            ClearBackground(MIDNIGHTBLACK);
 
             BeginMode2D(camera);
-            /*
-                for (int y = 0; y < whateverMatrix.size(); y++) {
+                // Draw grid line
+                for (int y = 0; y <= grid.size(); y++) {
+                    DrawLine(0, y, grid[0].size(), y, gridLineColor);
+                };
+                for (int x = 0; x <= grid[0].size(); x++) {
+                    DrawLine(x, 0, x, grid.size(), gridLineColor);
+                };
+
+                // Draw cell grid
+                for (int y = 0; y < grid.size(); y++) {
                     if (
                         y + 1 < worldTopLeft.y ||
                         y - 1 > worldBottomRight.y
                     ) {
                         continue;
                     };
-                    for (int x = 0; x < whateverMatrix[y].size(); x++) {
+                    for (int x = 0; x < grid[y].size(); x++) {
                         if (
                             x + 1 < worldTopLeft.x ||
-                            x - 1 > worldBottomRight.x
+                            x - 1 > worldBottomRight.x ||
+                            !grid[y][x].currentState
                         ) {
                             continue;
                         };
@@ -107,11 +159,10 @@ int main() {
                             y,
                             1,
                             1,
-                            Color
+                            PALEJADE
                         );
                     };
                 };
-            */
             EndMode2D();
 
             DrawTextureRec(
