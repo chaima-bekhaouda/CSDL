@@ -11,14 +11,17 @@ void subNeighborCount(unsigned char& cell);
 unsigned char getNeighborCount(unsigned char cell);
 
 void addNeighborCountToNeighbors(
-    struct Grid& grid,
+    std::vector<std::vector<unsigned char>>& nextGrid,
     unsigned int originY,
     unsigned int originX
 );
 void subNeighborCountToNeighbors(
-    struct Grid& grid,
+    std::vector<std::vector<unsigned char>>& nextGrid,
     unsigned int originY,
     unsigned int originX
 );
 
-void iterateOverGrid(struct Grid& grid);
+void iterateOverGrid(
+    std::vector<std::vector<unsigned char>>& currentGrid,
+    std::vector<std::vector<unsigned char>>& nextGrid
+);
