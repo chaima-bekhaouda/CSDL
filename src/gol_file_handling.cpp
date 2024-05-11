@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <exception>
 #include "gol_elements.hpp"
 #include "gol_algorithm.hpp"
 
