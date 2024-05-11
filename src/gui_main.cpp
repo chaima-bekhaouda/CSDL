@@ -1,17 +1,21 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "gol_elements.hpp"
-#include "gol_algorithm.hpp"
+#include "abrash_elements.hpp"
+#include "abrash_algorithm.hpp"
 #include "raylib.h"
 #include "gui_colors.hpp"
 #define MAX_ZOOM 60.0f
 
 
 int main() {
-    std::vector<std::vector<struct Cell>> grid(
+    std::vector<std::vector<unsigned char>> currentGrid(
         64,
-        std::vector<struct Cell> (64, {0, 0})
+        std::vector<unsigned char> (64, 0)
+    );
+    std::vector<std::vector<unsigned char>> nextGrid(
+        64,
+        std::vector<unsigned char> (64, 0)
     );
 
     InitWindow(1024, 720, "The Game Of Life");
@@ -77,7 +81,10 @@ int main() {
 
 
     Camera2D camera;
-    camera.target = (Vector2){grid[0].size() / 2.0f, grid.size() / 2.0f};
+    camera.target = (Vector2){
+        currentGrid[0].size() / 2.0f,
+        currentGrid.size() / 2.0f
+    };
     camera.offset = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
     camera.rotation = 0.0f;
     camera.zoom = 10.0f;
@@ -88,8 +95,8 @@ int main() {
     while (!WindowShouldClose()) {
         if (play) {
             if (ticks == 0) {
-                setNextStates(grid);
-                setCurrentStates(grid);
+                iterateOverGrid(currentGrid, nextGrid);
+                currentGrid = nextGrid;
             }
             ticks = (ticks + 1 + maxTicks) % maxTicks;
         };
@@ -124,15 +131,23 @@ int main() {
                 clickPos.x = floor(clickPos.x);
                 clickPos.y = floor(clickPos.y);
                 if (
-                    (0 <= clickPos.x && clickPos.x <= grid[0].size()) &&
-                    (0 <= clickPos.y && clickPos.y <= grid.size())
+                    (0 <= clickPos.x && clickPos.x <= currentGrid[0].size()) &&
+                    (0 <= clickPos.y && clickPos.y <= currentGrid.size())
                 ) {
-                    switch (grid[clickPos.y][clickPos.x].currentState) {
-                        case false:
-                            grid[clickPos.y][clickPos.x].currentState = true;
+                    switch (getCellState(currentGrid[clickPos.y][clickPos.x])) {
+                        case 0:
+                            setCellAlive(nextGrid[clickPos.y][clickPos.x]);
+                            addNeighborCountToNeighbors(
+                                nextGrid, clickPos.y, clickPos.x
+                            );
+                            currentGrid = nextGrid;
                             break;
                         case true:
-                            grid[clickPos.y][clickPos.x].currentState = false;
+                            setCellDead(nextGrid[clickPos.y][clickPos.x]);
+                            subNeighborCountToNeighbors(
+                                nextGrid, clickPos.y, clickPos.x
+                            );
+                            currentGrid = nextGrid;
                             break;
                     }
                 }
@@ -146,8 +161,8 @@ int main() {
 
         if (IsKeyPressed(KEY_R)) {
             camera.target = (Vector2){
-                grid[0].size() / 2.0f,
-                grid.size() / 2.0f
+                currentGrid[0].size() / 2.0f,
+                currentGrid.size() / 2.0f
             };
             camera.offset = (Vector2){
                 GetScreenWidth() / 2.0f,
@@ -199,26 +214,26 @@ int main() {
 
             BeginMode2D(camera);
                 // Draw grid line
-                for (int y = 0; y <= grid.size(); y++) {
-                    DrawLine(0, y, grid[0].size(), y, gridLineColor);
+                for (int y = 0; y <= currentGrid.size(); y++) {
+                    DrawLine(0, y, currentGrid[0].size(), y, gridLineColor);
                 };
-                for (int x = 0; x <= grid[0].size(); x++) {
-                    DrawLine(x, 0, x, grid.size(), gridLineColor);
+                for (int x = 0; x <= currentGrid[0].size(); x++) {
+                    DrawLine(x, 0, x, currentGrid.size(), gridLineColor);
                 };
 
                 // Draw cell grid
-                for (int y = 0; y < grid.size(); y++) {
+                for (int y = 0; y < currentGrid.size(); y++) {
                     if (
                         y + 1 < worldTopLeft.y ||
                         y - 1 > worldBottomRight.y
                     ) {
                         continue;
                     };
-                    for (int x = 0; x < grid[y].size(); x++) {
+                    for (int x = 0; x < currentGrid[y].size(); x++) {
                         if (
                             x + 1 < worldTopLeft.x ||
                             x - 1 > worldBottomRight.x ||
-                            !grid[y][x].currentState
+                            getCellState(currentGrid[y][x]) == 0
                         ) {
                             continue;
                         };
