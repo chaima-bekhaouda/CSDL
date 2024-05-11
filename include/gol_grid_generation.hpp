@@ -3,6 +3,6 @@
 #include "gol_elements.hpp"
 
 
-std::vector<std::vector<struct Cell>> generateGrid(
+std::vector<std::vector<unsigned char>> generateGrid(
     int gridY, int gridX, double densityFraction
 );

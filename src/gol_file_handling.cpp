@@ -6,6 +6,7 @@
 #include "gol_elements.hpp"
 
 
+/*
 bool doesFileExist(std::string fileName) {
     bool fileExists;
 
@@ -109,3 +110,4 @@ std::vector<std::vector<struct Cell>> loadGrid(std::string gridString) {
 
     return grid;
 }
+*/

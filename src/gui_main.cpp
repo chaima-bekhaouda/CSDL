@@ -1,22 +1,19 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "abrash_elements.hpp"
-#include "abrash_algorithm.hpp"
+#include "gol_elements.hpp"
+#include "gol_algorithm.hpp"
+#include "gol_grid_generation.hpp"
 #include "raylib.h"
 #include "gui_colors.hpp"
 #define MAX_ZOOM 60.0f
 
 
 int main() {
-    std::vector<std::vector<unsigned char>> currentGrid(
-        64,
-        std::vector<unsigned char> (64, 0)
+    std::vector<std::vector<unsigned char>> currentGrid = generateGrid(
+        1024, 1024, 0.25
     );
-    std::vector<std::vector<unsigned char>> nextGrid(
-        64,
-        std::vector<unsigned char> (64, 0)
-    );
+    std::vector<std::vector<unsigned char>> nextGrid = currentGrid;
 
     InitWindow(1024, 720, "The Game Of Life");
 

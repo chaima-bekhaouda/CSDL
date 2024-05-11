@@ -1,12 +1,8 @@
 #include <vector>
 
-
-#ifndef CSDL_INCLUDE_GOL_ELEMENTS_H_
-#define CSDL_INCLUDE_GOL_ELEMENTS_H_
-struct Cell {
-    bool currentState;
-    bool nextState;
-};
-#endif  // CSDL_INCLUDE_GOL_ELEMENTS_H_
-
-extern std::vector<std::vector<struct Cell>> cell;
+// an unsigned char is 8 bits long
+// 1 bit is for the cell's state (boolean, alive or dead)
+// 4 bits are for the number of live neighbors (maximum is 0b1000, 8 neighbors)
+// 3 bits are unused
+extern std::vector<std::vector<unsigned char>> currentGrid;
+extern std::vector<std::vector<unsigned char>> nextGrid;
