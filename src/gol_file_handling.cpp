@@ -4,9 +4,9 @@
 #include <vector>
 #include <exception>
 #include "gol_elements.hpp"
+#include "gol_algorithm.hpp"
 
 
-/*
 bool doesFileExist(std::string fileName) {
     bool fileExists;
 
@@ -56,12 +56,12 @@ bool areCharactersValid(std::string fileName) {
 }
 
 void saveGrid(
-    std::string fileName, std::vector<std::vector<struct Cell>> grid
+    std::string fileName, std::vector<std::vector<unsigned char>> grid
 ) {
     std::string textFileContent = "!" + fileName + "\n";
     for (int y = 0; y < grid.size(); y++) {
         for (int x = 0; x < grid.size(); x++) {
-            switch (grid[y][x].currentState) {
+            switch (getCellState(grid[y][x])) {
                 case 0: textFileContent += '.'; break;
                 case 1: textFileContent += 'O'; break;
             };
@@ -92,22 +92,39 @@ std::string readGridFile(std::string fileName) {
     return fileContent.str();
 }
 
-std::vector<std::vector<struct Cell>> loadGrid(std::string gridString) {
-    std::vector<std::vector<struct Cell>> grid;
-    grid.emplace_back();
+std::vector<std::vector<unsigned char>> loadGrid(std::string gridString) {
+    std::stringstream dimensionsStringStream (gridString);
+    std::string line;
 
-    int y = 0;
-    for (int i = 0; i < gridString.size(); i++) {
-        switch (gridString[i]) {
-            case '.': grid[y].emplace_back(Cell{0, 0}); break;
-            case 'O': grid[y].emplace_back(Cell{1, 0}); break;
-            case '\n': y++; grid.emplace_back(); break;
-        };
+    int gridRows = 1;
+    int gridColumns = 0;
+    while (std::getline(dimensionsStringStream, line)) {
+        if (gridColumns == 0) {
+            for (char c : line) {
+                gridColumns++;
+            }
+        }
+        gridRows++;
     };
-    if (grid[grid.size() - 1].size() == 0) {
-        grid.pop_back();
+
+    std::vector<std::vector<unsigned char>> grid (
+        gridRows, std::vector<unsigned char> (gridColumns, 0)
+    );
+
+    std::stringstream insertStringStream (gridString);
+    int y = 0;
+    int x;
+    while (std::getline(insertStringStream, line)) {
+        x = 0;
+        for (char c : line) {
+            if (c == 'O') {
+                setCellAlive(grid[y][x]);
+                addNeighborCountToNeighbors(grid, y, x);
+            };
+            x++;
+        };
+        y++;
     };
 
     return grid;
 }
-*/

@@ -4,14 +4,15 @@
 #include "gol_elements.hpp"
 #include "gol_algorithm.hpp"
 #include "gol_grid_generation.hpp"
+#include "gol_file_handling.hpp"
 #include "raylib.h"
 #include "gui_colors.hpp"
 #define MAX_ZOOM 60.0f
 
 
 int main() {
-    std::vector<std::vector<unsigned char>> currentGrid = generateGrid(
-        1024, 1024, 0.25
+    std::vector<std::vector<unsigned char>> currentGrid = loadGrid(
+        readGridFile("default.cells")
     );
     std::vector<std::vector<unsigned char>> nextGrid = currentGrid;
 
