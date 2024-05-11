@@ -12,7 +12,7 @@
 
 int main() {
     std::vector<std::vector<unsigned char>> currentGrid = generateGrid(
-        32, 32, 0.85
+        32, 32, 0.25
     );
     std::vector<std::vector<unsigned char>> nextGrid = currentGrid;
 
@@ -320,8 +320,6 @@ int main() {
     };
 
     CloseWindow();
-
-    saveGrid("save-test", currentGrid);
 
     return 0;
 }
