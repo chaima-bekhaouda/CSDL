@@ -12,7 +12,7 @@
 
 int main() {
     std::vector<std::vector<unsigned char>> currentGrid = generateGrid(
-        32, 32, 0.25
+        128, 128, 0.25
     );
     std::vector<std::vector<unsigned char>> nextGrid = currentGrid;
 
@@ -21,7 +21,7 @@ int main() {
     Vector2 screenTopLeft = {0, 0};
     Vector2 screenBottomRight = {1024, 720};
 
-    int maxTicks = 1;
+    int maxTicks = 100;
     int ticks = 0;
     bool drawFPS = false;
 
@@ -99,15 +99,6 @@ int main() {
             ticks = (ticks + 1 + maxTicks) % maxTicks;
         };
 
-        if (IsKeyPressed(KEY_LEFT_CONTROL) || IsKeyPressed(KEY_RIGHT_CONTROL)) {
-            maxTicks -= 1;
-            if (maxTicks < 1) maxTicks = 1;
-        } else if (
-            IsKeyPressed(KEY_LEFT_SHIFT) || IsKeyPressed(KEY_RIGHT_SHIFT)
-        ) {
-            maxTicks += 1;
-        };
-
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             if (CheckCollisionPointRec(GetMousePosition(), menuButtonBounds)) {
@@ -155,8 +146,6 @@ int main() {
         if (IsKeyPressed(KEY_F)) {
             drawFPS ? drawFPS = false : drawFPS = true;
         }
-
-
         if (IsKeyPressed(KEY_R)) {
             camera.target = (Vector2){
                 currentGrid[0].size() / 2.0f,
@@ -175,6 +164,12 @@ int main() {
                 * 255.0f
             );
         };
+        if (IsKeyPressed(KEY_SPACE)) {
+            switch (play) {
+                case false: play = true; break;
+                case true: play = false; break;
+            };
+        };
 
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
             if (!CheckCollisionPointRec(GetMousePosition(), menuButtonBounds)) {
@@ -185,7 +180,7 @@ int main() {
         };
 
         double mouseWheelMove = GetMouseWheelMove();
-        if (mouseWheelMove != 0) {
+        if (IsKeyDown(KEY_LEFT_SHIFT)) {
             Vector2 mousePositionInWorld = GetScreenToWorld2D(
                 GetMousePosition(), camera
             );
@@ -202,6 +197,10 @@ int main() {
                 / (MAX_ZOOM - 1.0f)
                 * 255.0f
             );
+        } else {
+            maxTicks += mouseWheelMove * 10;
+            if (maxTicks % 10 == 1) maxTicks -= 1;
+            if (maxTicks < 1) maxTicks = 1;
         };
 
         Vector2 worldTopLeft = GetScreenToWorld2D(screenTopLeft, camera);
@@ -235,13 +234,7 @@ int main() {
                         ) {
                             continue;
                         };
-                        DrawRectangle(
-                            x,
-                            y,
-                            1,
-                            1,
-                            PALEJADE
-                        );
+                        DrawPixel(x, y, PALEJADE);
                     };
                 };
             EndMode2D();
