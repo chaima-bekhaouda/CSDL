@@ -30,8 +30,8 @@ void clickMainMenuLoadGrid() {
     std::cout << "set currentMenu to 2\n";
 }
 
-void clickMainMenuSaveGrid() {
-    std::cout << "set currentMenu to 3\n";
+void clickMainMenuSaveGrid(int& currentMenu) {
+    currentMenu = 3;
 }
 
 void renderMainMenu(

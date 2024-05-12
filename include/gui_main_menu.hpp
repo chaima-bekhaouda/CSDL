@@ -21,7 +21,7 @@ void clickMainMenuGenerateNewGrid(
 
 void clickMainMenuLoadGrid();
 
-void clickMainMenuSaveGrid();
+void clickMainMenuSaveGrid(int& currentMenu);
 
 void renderMainMenu(
     Font& jetBrainsMono

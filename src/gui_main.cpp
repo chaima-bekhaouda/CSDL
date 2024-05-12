@@ -9,6 +9,7 @@
 #include "gui_colors.hpp"
 #include "gui_main_menu.hpp"
 #include "gui_generate_grid.hpp"
+#include "gui_save_grid.hpp"
 #define MAX_ZOOM 60.0f
 
 
@@ -146,7 +147,7 @@ int main() {
                             GetMousePosition(),
                             mainMenuSaveGridBounds
                         )) {
-                            clickMainMenuSaveGrid();
+                            clickMainMenuSaveGrid(currentMenu);
                         };
                         break;
                     case 1:
@@ -403,6 +404,9 @@ int main() {
                         currentDensity,
                         jetBrainsMono
                     );
+                    break;
+                case 3:
+                    displaySaveGrid(jetBrainsMono);
                     break;
             };
 
