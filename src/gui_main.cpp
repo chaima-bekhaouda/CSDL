@@ -82,6 +82,10 @@ int main() {
     Rectangle mainMenuLoadGridBounds = {404.2, 335.1, 216, 44.1};
     Rectangle mainMenuSaveGridBounds = {404.2, 422.4, 216, 44.1};
 
+    int currentWidth = 0;
+    int widthDigits = 0;
+    int currentHeight = 0;
+    int heightDigits = 0;
     Rectangle generateNewGridBounds = {344, 154.3, 336, 412.7};
     Rectangle widthEntryBounds = {442.7, 205.1, 137.8, 44.1};
     Rectangle heightEntryBounds = {442.7, 291.6, 137.8, 44.1};
@@ -174,6 +178,60 @@ int main() {
                             break;
                     }
                 }
+            };
+        };
+
+        if (currentMenu == 1) {
+            if (CheckCollisionPointRec(GetMousePosition(), widthEntryBounds)) {
+                int minKey;
+                widthDigits == 0 ? minKey = 49 : minKey = 48;
+                int pressedKey = GetKeyPressed();
+                if (
+                    minKey <= pressedKey &&
+                    pressedKey <= 57 &&
+                    widthDigits < 6
+                ) {
+                    int pressedDigit = pressedKey - 48;
+                    currentWidth = (int) (
+                        currentWidth * 10 + pressedDigit
+                    );
+                    widthDigits++;
+                } else if (pressedKey == KEY_BACKSPACE) {
+                    int lastDigit = currentWidth % 10;
+                    if (currentWidth == 1) {
+                        currentWidth = 0;
+                        widthDigits--;
+                    } else if (currentWidth > 1) {
+                        currentWidth /= 10;
+                        widthDigits--;
+                    }
+                };
+            } else if (CheckCollisionPointRec(
+                GetMousePosition(), heightEntryBounds)
+            ) {
+                int minKey;
+                widthDigits == 0 ? minKey = 49 : minKey = 48;
+                int pressedKey = GetKeyPressed();
+                if (
+                    minKey <= pressedKey &&
+                    pressedKey <= 57 &&
+                    heightDigits < 6
+                ) {
+                    int pressedDigit = pressedKey - 48;
+                    currentHeight = (int) (
+                        currentHeight * 10 + pressedDigit
+                    );
+                    heightDigits++;
+                } else if (pressedKey == KEY_BACKSPACE) {
+                    int lastDigit = currentWidth % 10;
+                    if (currentHeight == 1) {
+                        currentHeight = 0;
+                        heightDigits--;
+                    } else if (currentHeight > 1) {
+                        currentHeight /= 10;
+                        heightDigits--;
+                    }
+                };
             };
         };
 
@@ -403,6 +461,25 @@ int main() {
                         MINTYTEAL
                     );
                     DrawRectangleRounded(widthEntryBounds, 33, 10, MINTYTEAL);
+                    if (currentWidth == 0) {
+                        DrawTextEx(
+                            jetBrainsMono,
+                            "...",
+                            Vector2{496, 217.8},
+                            26,
+                            0,
+                            PALEJADE
+                        );
+                    } else {
+                        DrawTextEx(
+                            jetBrainsMono,
+                            TextFormat("%d", currentWidth),
+                            Vector2{474, 214},
+                            26,
+                            0,
+                            MIDNIGHTBLACK
+                        );
+                    };
                     DrawTextEx(
                         jetBrainsMono,
                         "Height",
@@ -412,6 +489,25 @@ int main() {
                         MINTYTEAL
                     );
                     DrawRectangleRounded(heightEntryBounds, 33, 10, MINTYTEAL);
+                    if (currentHeight == 0) {
+                        DrawTextEx(
+                            jetBrainsMono,
+                            "...",
+                            Vector2{496, 303.4},
+                            26,
+                            0,
+                            PALEJADE
+                        );
+                    } else {
+                        DrawTextEx(
+                            jetBrainsMono,
+                            TextFormat("%d", currentHeight),
+                            Vector2{474, 299.6},
+                            26,
+                            0,
+                            MIDNIGHTBLACK
+                        );
+                    };
                     DrawTextEx(
                         jetBrainsMono,
                         "Density",
