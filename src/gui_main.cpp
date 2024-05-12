@@ -137,6 +137,11 @@ int main() {
                             GetMousePosition(),
                             mainMenuGenerateNewGridBounds
                         )) {
+                            currentWidth = 0;
+                            widthDigits = 0;
+                            currentHeight = 0;
+                            heightDigits = 0;
+                            currentDensity = 0;
                             currentMenu = 1;
                         } else if (CheckCollisionPointRec(
                             GetMousePosition(),
@@ -150,6 +155,41 @@ int main() {
                             std::cout << "set currentMenu to 3\n";
                         };
                         break;
+                    case 1:
+                        if (CheckCollisionPointRec(
+                            GetMousePosition(),
+                            createNewGridBounds
+                            ) &&
+                            currentWidth != 0 &&
+                            currentHeight != 0 &&
+                            currentDensity != 0
+                        ) {
+                            play = false;
+
+                            currentGrid = generateGrid(
+                                currentHeight,
+                                currentWidth,
+                                (double) currentDensity / 100
+                            );
+                            nextGrid = currentGrid;
+                            camera.target = (Vector2){
+                                currentGrid[0].size() / 2.0f,
+                                currentGrid.size() / 2.0f
+                            };
+                            camera.offset = (Vector2){
+                                GetScreenWidth() / 2.0f,
+                                GetScreenHeight() / 2.0f
+                            };
+                            camera.rotation = 0.0f;
+                            camera.zoom = 10.0f;
+
+                            gridLineColor.a = (int)(
+                                (camera.zoom - 1.0f)
+                                / (MAX_ZOOM - 1.0f)
+                                * 255.0f
+                            );
+                            currentMenu = -1;
+                        }
                 }
             } else {
                 Vector2 clickPos = GetScreenToWorld2D(
@@ -561,7 +601,7 @@ int main() {
                             Vector2{493.3, 389.9},
                             26,
                             0,
-                            WHITE
+                            MIDNIGHTBLACK
                         );
                     };
                     DrawRectangleRounded(createNewGridBounds, 33, 10, MINTYTEAL);
