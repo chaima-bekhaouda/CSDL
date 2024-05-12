@@ -11,8 +11,8 @@
 
 
 int main() {
-    std::vector<std::vector<unsigned char>> currentGrid = generateGrid(
-        128, 128, 0.25
+    std::vector<std::vector<unsigned char>> currentGrid = loadGrid(
+        readGridFile("default.cells")
     );
     std::vector<std::vector<unsigned char>> nextGrid = currentGrid;
 
@@ -32,7 +32,7 @@ int main() {
         0
     );
 
-    bool menuUp = false;
+    int currentMenu = -1;
     Texture menuButton = LoadTexture("resources/menu-button.png");
     Rectangle menuButtonSource = {
         0,
@@ -77,6 +77,11 @@ int main() {
         (float)menuBarPlay.height
     };
 
+    Rectangle mainMenuBounds = {344, 198.6, 336, 324.1};
+    Rectangle mainMenuGenerateNewGridBounds = {403.6, 249.4, 216, 44.1};
+    Rectangle mainMenuLoadGridBounds = {404.2, 335.1, 216, 44.1};
+    Rectangle mainMenuSaveGridBounds = {404.2, 422.4, 216, 44.1};
+
 
     Camera2D camera;
     camera.target = (Vector2){
@@ -102,8 +107,11 @@ int main() {
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             if (CheckCollisionPointRec(GetMousePosition(), menuButtonBounds)) {
-                menuUp ? menuUp = false : menuUp = true;
-                std::cout << menuUp << '\n';
+                switch (currentMenu != -1) {
+                    case 0: currentMenu = 0; break;
+                    case 1: currentMenu = -1; break;
+                };
+                std::cout << currentMenu << '\n';
             } else if (CheckCollisionPointRec(
                 GetMousePosition(),
                 menuBarPlayPauseBounds
@@ -111,6 +119,27 @@ int main() {
                 switch (play) {
                     case false: play = true; break;
                     case true: play = false; break;
+                }
+            } else if (currentMenu != -1) {
+                switch (currentMenu) {
+                    case 0:
+                        if (CheckCollisionPointRec(
+                            GetMousePosition(),
+                            mainMenuGenerateNewGridBounds
+                        )) {
+                            std::cout << "set currentMenu to 1\n";
+                        } else if (CheckCollisionPointRec(
+                            GetMousePosition(),
+                            mainMenuLoadGridBounds
+                        )) {
+                            std::cout << "set currentMenu to 2\n";
+                        } else if (CheckCollisionPointRec(
+                            GetMousePosition(),
+                            mainMenuSaveGridBounds
+                        )) {
+                            std::cout << "set currentMenu to 3\n";
+                        };
+                        break;
                 }
             } else {
                 Vector2 clickPos = GetScreenToWorld2D(
@@ -307,6 +336,54 @@ int main() {
                 0,
                 MIDNIGHTBLACK
             );
+
+            switch (currentMenu) {
+                case 0:
+                    DrawRectangleRec(mainMenuBounds, MIDNIGHTBLACK);
+                    DrawRectangleLinesEx(mainMenuBounds, 4, DEEPOCEANBLUE);
+                    DrawRectangleRounded(
+                        mainMenuGenerateNewGridBounds,
+                        33,
+                        10,
+                        MINTYTEAL
+                    );
+                    DrawTextEx(
+                        jetBrainsMono,
+                        "Generate new grid",
+                        Vector2{418, 258},
+                        26,
+                        0,
+                        MIDNIGHTBLACK
+                    );
+                    DrawRectangleRounded(
+                        mainMenuLoadGridBounds,
+                        33,
+                        10,
+                        MINTYTEAL
+                    );
+                    DrawTextEx(
+                        jetBrainsMono,
+                        "Load current grid",
+                        Vector2{419, 344},
+                        26,
+                        0,
+                        MIDNIGHTBLACK
+                    );
+                    DrawRectangleRounded(
+                        mainMenuSaveGridBounds,
+                        33,
+                        10,
+                        MINTYTEAL
+                    );
+                    DrawTextEx(
+                        jetBrainsMono,
+                        "Save current grid",
+                        Vector2{418, 432},
+                        26,
+                        0,
+                        MIDNIGHTBLACK
+                    );
+            };
 
             if (drawFPS) DrawFPS(900, 0);
         EndDrawing();

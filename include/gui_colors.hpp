@@ -1,7 +1,7 @@
 #include "raylib.h"
 
 
-extern Color MIDNIGHTBLACK;
-extern Color DEEPOCEANBLUE;
-extern Color MINTYTEAL;
-extern Color PALEJADE;
+extern const Color MIDNIGHTBLACK;
+extern const Color DEEPOCEANBLUE;
+extern const Color MINTYTEAL;
+extern const Color PALEJADE;
