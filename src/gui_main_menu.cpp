@@ -4,6 +4,12 @@
 #include "gui_colors.hpp"
 
 
+Rectangle mainMenuBounds = {344, 198.6, 336, 324.1};
+Rectangle mainMenuGenerateNewGridBounds = {403.6, 249.4, 216, 44.1};
+Rectangle mainMenuLoadGridBounds = {404.2, 335.1, 216, 44.1};
+Rectangle mainMenuSaveGridBounds = {404.2, 422.4, 216, 44.1};
+
+
 void clickMainMenuGenerateNewGrid(
     int& currentWidth,
     int& widthDigits,
@@ -29,10 +35,6 @@ void clickMainMenuSaveGrid() {
 }
 
 void renderMainMenu(
-    Rectangle& mainMenuBounds,
-    Rectangle& mainMenuGenerateNewGridBounds,
-    Rectangle& mainMenuLoadGridBounds,
-    Rectangle& mainMenuSaveGridBounds,
     Font& jetBrainsMono
 ) {
     DrawRectangleRec(mainMenuBounds, MIDNIGHTBLACK);

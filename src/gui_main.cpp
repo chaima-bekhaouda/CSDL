@@ -79,11 +79,6 @@ int main() {
         (float)menuBarPlay.height
     };
 
-    Rectangle mainMenuBounds = {344, 198.6, 336, 324.1};
-    Rectangle mainMenuGenerateNewGridBounds = {403.6, 249.4, 216, 44.1};
-    Rectangle mainMenuLoadGridBounds = {404.2, 335.1, 216, 44.1};
-    Rectangle mainMenuSaveGridBounds = {404.2, 422.4, 216, 44.1};
-
     int currentWidth = 0;
     int widthDigits = 0;
     int currentHeight = 0;
@@ -475,10 +470,6 @@ int main() {
             switch (currentMenu) {
                 case 0:
                     renderMainMenu(
-                        mainMenuBounds,
-                        mainMenuGenerateNewGridBounds,
-                        mainMenuLoadGridBounds,
-                        mainMenuSaveGridBounds,
                         jetBrainsMono
                     );
                     break;
