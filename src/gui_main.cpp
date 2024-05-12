@@ -86,6 +86,7 @@ int main() {
     int widthDigits = 0;
     int currentHeight = 0;
     int heightDigits = 0;
+    int currentDensity = 0;
     Rectangle generateNewGridBounds = {344, 154.3, 336, 412.7};
     Rectangle widthEntryBounds = {442.7, 205.1, 137.8, 44.1};
     Rectangle heightEntryBounds = {442.7, 291.6, 137.8, 44.1};
@@ -210,7 +211,7 @@ int main() {
                 GetMousePosition(), heightEntryBounds)
             ) {
                 int minKey;
-                widthDigits == 0 ? minKey = 49 : minKey = 48;
+                heightDigits == 0 ? minKey = 49 : minKey = 48;
                 int pressedKey = GetKeyPressed();
                 if (
                     minKey <= pressedKey &&
@@ -223,13 +224,40 @@ int main() {
                     );
                     heightDigits++;
                 } else if (pressedKey == KEY_BACKSPACE) {
-                    int lastDigit = currentWidth % 10;
+                    int lastDigit = currentHeight % 10;
                     if (currentHeight == 1) {
                         currentHeight = 0;
                         heightDigits--;
                     } else if (currentHeight > 1) {
                         currentHeight /= 10;
                         heightDigits--;
+                    }
+                };
+            } else if (CheckCollisionPointRec(
+                GetMousePosition(),
+                densityEntryBounds
+                )
+            ) {
+                int minKey;
+                currentDensity == 0 ? minKey = 49 : minKey = 48;
+                int pressedKey = GetKeyPressed();
+                if (
+                    minKey <= pressedKey &&
+                    pressedKey <= 57
+                ) {
+                    int pressedDigit = pressedKey - 48;
+                    int newDensity = (int) (
+                        currentDensity * 10 + pressedDigit
+                    );
+                    if (newDensity <= 100) {
+                        currentDensity = newDensity;
+                    }
+                } else if (pressedKey == KEY_BACKSPACE) {
+                    int lastDigit = currentDensity % 10;
+                    if (currentDensity == 1) {
+                        currentDensity = 0;
+                    } else if (currentDensity > 1) {
+                        currentDensity /= 10;
                     }
                 };
             };
@@ -517,6 +545,25 @@ int main() {
                         MINTYTEAL
                     );
                     DrawRectangleRounded(densityEntryBounds, 33, 10, MINTYTEAL);
+                    if (currentDensity == 0) {
+                        DrawTextEx(
+                            jetBrainsMono,
+                            "...",
+                            Vector2{496, 389},
+                            26,
+                            0,
+                            PALEJADE
+                        );
+                    } else {
+                        DrawTextEx(
+                            jetBrainsMono,
+                            TextFormat("%d%%", currentDensity),
+                            Vector2{493.3, 389.9},
+                            26,
+                            0,
+                            WHITE
+                        );
+                    };
                     DrawRectangleRounded(createNewGridBounds, 33, 10, MINTYTEAL);
                     DrawTextEx(
                         jetBrainsMono,
