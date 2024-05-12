@@ -1,7 +1,32 @@
+#include <iostream>
 #include <cmath>
 #include "raylib.h"
 #include "gui_colors.hpp"
 
+
+void clickMainMenuGenerateNewGrid(
+    int& currentWidth,
+    int& widthDigits,
+    int& currentHeight,
+    int& heightDigits,
+    int& currentDensity,
+    int& currentMenu
+) {
+    currentWidth = 0;
+    widthDigits = 0;
+    currentHeight = 0;
+    heightDigits = 0;
+    currentDensity = 0;
+    currentMenu = 1;
+}
+
+void clickMainMenuLoadGrid() {
+    std::cout << "set currentMenu to 2\n";
+}
+
+void clickMainMenuSaveGrid() {
+    std::cout << "set currentMenu to 3\n";
+}
 
 void renderMainMenu(
     Rectangle& mainMenuBounds,
@@ -54,4 +79,4 @@ void renderMainMenu(
         0,
         MIDNIGHTBLACK
     );
-};
+}

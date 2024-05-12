@@ -138,22 +138,24 @@ int main() {
                             GetMousePosition(),
                             mainMenuGenerateNewGridBounds
                         )) {
-                            currentWidth = 0;
-                            widthDigits = 0;
-                            currentHeight = 0;
-                            heightDigits = 0;
-                            currentDensity = 0;
-                            currentMenu = 1;
+                            clickMainMenuGenerateNewGrid(
+                                currentWidth,
+                                widthDigits,
+                                currentHeight,
+                                heightDigits,
+                                currentDensity,
+                                currentMenu
+                            );
                         } else if (CheckCollisionPointRec(
                             GetMousePosition(),
                             mainMenuLoadGridBounds
                         )) {
-                            std::cout << "set currentMenu to 2\n";
+                            clickMainMenuLoadGrid();
                         } else if (CheckCollisionPointRec(
                             GetMousePosition(),
                             mainMenuSaveGridBounds
                         )) {
-                            std::cout << "set currentMenu to 3\n";
+                            clickMainMenuSaveGrid();
                         };
                         break;
                     case 1:
