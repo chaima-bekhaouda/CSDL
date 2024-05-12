@@ -82,6 +82,12 @@ int main() {
     Rectangle mainMenuLoadGridBounds = {404.2, 335.1, 216, 44.1};
     Rectangle mainMenuSaveGridBounds = {404.2, 422.4, 216, 44.1};
 
+    Rectangle generateNewGridBounds = {344, 154.3, 336, 412.7};
+    Rectangle widthEntryBounds = {442.7, 205.1, 137.8, 44.1};
+    Rectangle heightEntryBounds = {442.7, 291.6, 137.8, 44.1};
+    Rectangle densityEntryBounds = {442.7, 378.1, 142.2, 44.1};
+    Rectangle createNewGridBounds = {428.4, 464.1, 166.5, 44.1};
+
 
     Camera2D camera;
     camera.target = (Vector2){
@@ -111,7 +117,6 @@ int main() {
                     case 0: currentMenu = 0; break;
                     case 1: currentMenu = -1; break;
                 };
-                std::cout << currentMenu << '\n';
             } else if (CheckCollisionPointRec(
                 GetMousePosition(),
                 menuBarPlayPauseBounds
@@ -127,7 +132,7 @@ int main() {
                             GetMousePosition(),
                             mainMenuGenerateNewGridBounds
                         )) {
-                            std::cout << "set currentMenu to 1\n";
+                            currentMenu = 1;
                         } else if (CheckCollisionPointRec(
                             GetMousePosition(),
                             mainMenuLoadGridBounds
@@ -383,6 +388,49 @@ int main() {
                         0,
                         MIDNIGHTBLACK
                     );
+                    break;
+                case 1:
+                    DrawRectangleRec(generateNewGridBounds, MIDNIGHTBLACK);
+                    DrawRectangleLinesEx(
+                        generateNewGridBounds, 4, DEEPOCEANBLUE
+                    );
+                    DrawTextEx(
+                        jetBrainsMono,
+                        "Width",
+                        Vector2{486, 177.6},
+                        26,
+                        0,
+                        MINTYTEAL
+                    );
+                    DrawRectangleRounded(widthEntryBounds, 33, 10, MINTYTEAL);
+                    DrawTextEx(
+                        jetBrainsMono,
+                        "Height",
+                        Vector2{480, 265.9},
+                        26,
+                        0,
+                        MINTYTEAL
+                    );
+                    DrawRectangleRounded(heightEntryBounds, 33, 10, MINTYTEAL);
+                    DrawTextEx(
+                        jetBrainsMono,
+                        "Density",
+                        Vector2{476, 352.7},
+                        26,
+                        0,
+                        MINTYTEAL
+                    );
+                    DrawRectangleRounded(densityEntryBounds, 33, 10, MINTYTEAL);
+                    DrawRectangleRounded(createNewGridBounds, 33, 10, MINTYTEAL);
+                    DrawTextEx(
+                        jetBrainsMono,
+                        "Create new grid",
+                        Vector2{429, 473},
+                        26,
+                        0,
+                        MIDNIGHTBLACK
+                    );
+                    break;
             };
 
             if (drawFPS) DrawFPS(900, 0);
