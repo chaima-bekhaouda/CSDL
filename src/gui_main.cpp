@@ -7,6 +7,7 @@
 #include "gol_file_handling.hpp"
 #include "raylib.h"
 #include "gui_colors.hpp"
+#include "gui_main_menu.hpp"
 #define MAX_ZOOM 60.0f
 
 
@@ -470,49 +471,12 @@ int main() {
 
             switch (currentMenu) {
                 case 0:
-                    DrawRectangleRec(mainMenuBounds, MIDNIGHTBLACK);
-                    DrawRectangleLinesEx(mainMenuBounds, 4, DEEPOCEANBLUE);
-                    DrawRectangleRounded(
+                    renderMainMenu(
+                        mainMenuBounds,
                         mainMenuGenerateNewGridBounds,
-                        33,
-                        10,
-                        MINTYTEAL
-                    );
-                    DrawTextEx(
-                        jetBrainsMono,
-                        "Generate new grid",
-                        Vector2{418, 258},
-                        26,
-                        0,
-                        MIDNIGHTBLACK
-                    );
-                    DrawRectangleRounded(
                         mainMenuLoadGridBounds,
-                        33,
-                        10,
-                        MINTYTEAL
-                    );
-                    DrawTextEx(
-                        jetBrainsMono,
-                        "Load current grid",
-                        Vector2{419, 344},
-                        26,
-                        0,
-                        MIDNIGHTBLACK
-                    );
-                    DrawRectangleRounded(
                         mainMenuSaveGridBounds,
-                        33,
-                        10,
-                        MINTYTEAL
-                    );
-                    DrawTextEx(
-                        jetBrainsMono,
-                        "Save current grid",
-                        Vector2{418, 432},
-                        26,
-                        0,
-                        MIDNIGHTBLACK
+                        jetBrainsMono
                     );
                     break;
                 case 1:
