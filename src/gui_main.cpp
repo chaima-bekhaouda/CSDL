@@ -211,82 +211,17 @@ int main() {
 
         if (currentMenu == 1) {
             if (CheckCollisionPointRec(GetMousePosition(), widthEntryBounds)) {
-                int minKey;
-                widthDigits == 0 ? minKey = 49 : minKey = 48;
-                int pressedKey = GetKeyPressed();
-                if (
-                    minKey <= pressedKey &&
-                    pressedKey <= 57 &&
-                    widthDigits < 6
-                ) {
-                    int pressedDigit = pressedKey - 48;
-                    currentWidth = (int) (
-                        currentWidth * 10 + pressedDigit
-                    );
-                    widthDigits++;
-                } else if (pressedKey == KEY_BACKSPACE) {
-                    int lastDigit = currentWidth % 10;
-                    if (currentWidth == 1) {
-                        currentWidth = 0;
-                        widthDigits--;
-                    } else if (currentWidth > 1) {
-                        currentWidth /= 10;
-                        widthDigits--;
-                    }
-                };
+                typingInWidthEntry(widthDigits, currentWidth);
             } else if (CheckCollisionPointRec(
                 GetMousePosition(), heightEntryBounds)
             ) {
-                int minKey;
-                heightDigits == 0 ? minKey = 49 : minKey = 48;
-                int pressedKey = GetKeyPressed();
-                if (
-                    minKey <= pressedKey &&
-                    pressedKey <= 57 &&
-                    heightDigits < 6
-                ) {
-                    int pressedDigit = pressedKey - 48;
-                    currentHeight = (int) (
-                        currentHeight * 10 + pressedDigit
-                    );
-                    heightDigits++;
-                } else if (pressedKey == KEY_BACKSPACE) {
-                    int lastDigit = currentHeight % 10;
-                    if (currentHeight == 1) {
-                        currentHeight = 0;
-                        heightDigits--;
-                    } else if (currentHeight > 1) {
-                        currentHeight /= 10;
-                        heightDigits--;
-                    }
-                };
+                typingInHeightEntry(heightDigits, currentHeight);
             } else if (CheckCollisionPointRec(
                 GetMousePosition(),
                 densityEntryBounds
                 )
             ) {
-                int minKey;
-                currentDensity == 0 ? minKey = 49 : minKey = 48;
-                int pressedKey = GetKeyPressed();
-                if (
-                    minKey <= pressedKey &&
-                    pressedKey <= 57
-                ) {
-                    int pressedDigit = pressedKey - 48;
-                    int newDensity = (int) (
-                        currentDensity * 10 + pressedDigit
-                    );
-                    if (newDensity <= 100) {
-                        currentDensity = newDensity;
-                    }
-                } else if (pressedKey == KEY_BACKSPACE) {
-                    int lastDigit = currentDensity % 10;
-                    if (currentDensity == 1) {
-                        currentDensity = 0;
-                    } else if (currentDensity > 1) {
-                        currentDensity /= 10;
-                    }
-                };
+                typingInDensityEntry(currentDensity);
             };
         };
 

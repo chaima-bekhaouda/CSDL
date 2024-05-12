@@ -4,6 +4,12 @@
 #include "gui_colors.hpp"
 
 
+void typingInWidthEntry(int& widthDigits, int& currentWidth);
+
+void typingInHeightEntry(int& heightDigits, int& currentHeight);
+
+void typingInDensityEntry(int& currentDensity);
+
 void clickGenerateGridButton(
     bool& play,
     int& currentMenu,
