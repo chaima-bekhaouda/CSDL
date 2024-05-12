@@ -84,11 +84,6 @@ int main() {
     int currentHeight = 0;
     int heightDigits = 0;
     int currentDensity = 0;
-    Rectangle generateNewGridBounds = {344, 154.3, 336, 412.7};
-    Rectangle widthEntryBounds = {442.7, 205.1, 137.8, 44.1};
-    Rectangle heightEntryBounds = {442.7, 291.6, 137.8, 44.1};
-    Rectangle densityEntryBounds = {442.7, 378.1, 142.2, 44.1};
-    Rectangle createNewGridBounds = {428.4, 464.1, 166.5, 44.1};
 
 
     Camera2D camera;

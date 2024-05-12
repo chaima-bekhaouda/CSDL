@@ -4,6 +4,13 @@
 #include "gui_colors.hpp"
 
 
+extern Rectangle generateNewGridBounds;
+extern Rectangle widthEntryBounds;
+extern Rectangle heightEntryBounds;
+extern Rectangle densityEntryBounds;
+extern Rectangle createNewGridBounds;
+
+
 void typingInWidthEntry(int& widthDigits, int& currentWidth);
 
 void typingInHeightEntry(int& heightDigits, int& currentHeight);
