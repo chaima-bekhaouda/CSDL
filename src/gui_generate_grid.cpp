@@ -1,6 +1,49 @@
+#include <vector>
+#include <functional>
 #include "raylib.h"
 #include "gui_colors.hpp"
 
+
+void clickGenerateGridButton(
+    bool& play,
+    int& currentMenu,
+    int& currentWidth,
+    int& currentHeight,
+    int& currentDensity,
+    float MAX_ZOOM,
+    std::function<std::vector<std::vector<unsigned char>> (int, int, double)>
+    generateGrid,
+    std::vector<std::vector<unsigned char>>& currentGrid,
+    std::vector<std::vector<unsigned char>>& nextGrid,
+    Camera2D& camera,
+    Color& gridLineColor
+) {
+    play = false;
+
+    currentGrid = generateGrid(
+        currentHeight,
+        currentWidth,
+        (double) currentDensity / 100
+    );
+    nextGrid = currentGrid;
+    camera.target = (Vector2){
+        currentGrid[0].size() / 2.0f,
+        currentGrid.size() / 2.0f
+    };
+    camera.offset = (Vector2){
+        GetScreenWidth() / 2.0f,
+        GetScreenHeight() / 2.0f
+    };
+    camera.rotation = 0.0f;
+    camera.zoom = 10.0f;
+
+    gridLineColor.a = (int)(
+        (camera.zoom - 1.0f)
+        / (MAX_ZOOM - 1.0f)
+        * 255.0f
+    );
+    currentMenu = -1;
+}
 
 void displayGenerateGridMenu(
     Rectangle& generateNewGridBounds,
