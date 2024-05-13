@@ -26,8 +26,8 @@ void clickMainMenuGenerateNewGrid(
     currentMenu = 1;
 }
 
-void clickMainMenuLoadGrid() {
-    std::cout << "set currentMenu to 2\n";
+void clickMainMenuLoadGrid(int& currentMenu) {
+    currentMenu = 2;
 }
 
 void clickMainMenuSaveGrid(int& currentMenu) {

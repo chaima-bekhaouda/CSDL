@@ -12,6 +12,7 @@
 #include "gui_colors.hpp"
 #include "gui_main_menu.hpp"
 #include "gui_generate_grid.hpp"
+#include "gui_load_grid.hpp"
 #include "gui_save_grid.hpp"
 #include <iostream>
 
@@ -150,7 +151,7 @@ int main() {
                             GetMousePosition(),
                             mainMenuLoadGridBounds
                         )) {
-                            clickMainMenuLoadGrid();
+                            clickMainMenuLoadGrid(currentMenu);
                         } else if (CheckCollisionPointRec(
                             GetMousePosition(),
                             mainMenuSaveGridBounds
@@ -434,6 +435,9 @@ int main() {
                         currentDensity,
                         jetBrainsMono
                     );
+                    break;
+                case 2:
+                    displayLoadGrid();
                     break;
                 case 3:
                     displaySaveGrid(jetBrainsMono, currentGridName);

@@ -19,7 +19,7 @@ void clickMainMenuGenerateNewGrid(
     int& currentMenu
 );
 
-void clickMainMenuLoadGrid();
+void clickMainMenuLoadGrid(int& currentMenu);
 
 void clickMainMenuSaveGrid(int& currentMenu);
 
