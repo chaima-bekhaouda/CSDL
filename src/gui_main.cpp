@@ -16,24 +16,27 @@
 #include "gui_save_grid.hpp"
 #include <iostream>
 
-#define MAX_ZOOM 60.0f
+#define MAX_ZOOM 60.0f // Define the maximum zoom level
 
 
 int main() {
+    // Load the default grid
     std::vector<std::vector<unsigned char>> currentGrid = loadGrid(
         readGridFile("default")
     );
     std::vector<std::vector<unsigned char>> nextGrid = currentGrid;
-
+    // Initialize the game window
     InitWindow(1024, 720, "The Game Of Life");
-
+    // Define the screen boundaries
     Vector2 screenTopLeft = {0, 0};
     Vector2 screenBottomRight = {1024, 720};
 
+    // Define the game parameters
     int maxTicks = 100;
     int ticks = 0;
     bool drawFPS = false;
 
+    // Load the font
     Font jetBrainsMono = LoadFontEx(
         "resources/JetBrainsMono-Regular.ttf",
         26,
@@ -41,6 +44,7 @@ int main() {
         0
     );
 
+    // Initialize the menu
     int currentMenu = -1;
     Texture menuButton = LoadTexture("resources/menu-button.png");
     Rectangle menuButtonSource = {
@@ -56,6 +60,7 @@ int main() {
         (float)menuButton.height
     };
 
+    // Load the menu bar texture
     Texture menuBar = LoadTexture("resources/menu-bar.png");
     Rectangle menuBarSource = {
         0,
@@ -70,6 +75,7 @@ int main() {
         (float)menuBar.height
     };
 
+    // Initialize the play state and load the play/pause button textures
     bool play = false;
     Texture menuBarPlay = LoadTexture("resources/menu-bar-play.png");
     Texture menuBarPause = LoadTexture("resources/menu-bar-pause.png");
@@ -86,6 +92,8 @@ int main() {
         (float)menuBarPlay.height
     };
 
+
+    // Initialize the grid parameters
     int currentWidth = 0;
     int widthDigits = 0;
     int currentHeight = 0;
@@ -93,9 +101,11 @@ int main() {
     int currentDensity = 0;
 
 
+    // Initialize the grid name
     std::string currentGridName = "";
 
 
+    // Initialize the camera with the target set to the center of the current grid
     Camera2D camera;
     camera.target = (Vector2){
         currentGrid[0].size() / 2.0f,
@@ -108,6 +118,7 @@ int main() {
     Color gridLineColor = DEEPOCEANBLUE;
     gridLineColor.a = (int)((camera.zoom) / (MAX_ZOOM) * 255.0f);
 
+    // Main game loop
     while (!WindowShouldClose()) {
         if (play) {
             if (ticks == 0) {
@@ -117,7 +128,7 @@ int main() {
             ticks = (ticks + 1 + maxTicks) % maxTicks;
         };
 
-
+        // If the left mouse button is pressed
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             if (CheckCollisionPointRec(GetMousePosition(), menuButtonBounds)) {
                 switch (currentMenu != -1) {
@@ -342,119 +353,137 @@ int main() {
             if (maxTicks < 1) maxTicks = 1;
         };
 
+        ```cpp
+// Convert the top left and bottom right screen coordinates to world coordinates
         Vector2 worldTopLeft = GetScreenToWorld2D(screenTopLeft, camera);
         Vector2 worldBottomRight = GetScreenToWorld2D(screenBottomRight, camera);
 
+// Begin drawing to the screen
         BeginDrawing();
-            ClearBackground(MIDNIGHTBLACK);
+        // Clear the screen with a black background
+        ClearBackground(MIDNIGHTBLACK);
 
-            BeginMode2D(camera);
-                // Draw grid line
-                for (int y = 0; y <= currentGrid.size(); y++) {
-                    DrawLine(0, y, currentGrid[0].size(), y, gridLineColor);
-                };
-                for (int x = 0; x <= currentGrid[0].size(); x++) {
-                    DrawLine(x, 0, x, currentGrid.size(), gridLineColor);
-                };
+        // Begin 2D mode with the camera
+        BeginMode2D(camera);
+        // Draw grid lines
+        for (int y = 0; y <= currentGrid.size(); y++) {
+            DrawLine(0, y, currentGrid[0].size(), y, gridLineColor);
+        };
+        for (int x = 0; x <= currentGrid[0].size(); x++) {
+            DrawLine(x, 0, x, currentGrid.size(), gridLineColor);
+        };
 
-                // Draw cell grid
-                for (int y = 0; y < currentGrid.size(); y++) {
-                    if (
-                        y + 1 < worldTopLeft.y ||
-                        y - 1 > worldBottomRight.y
+        // Draw cell grid
+        for (int y = 0; y < currentGrid.size(); y++) {
+            // Skip drawing cells that are outside the visible area
+            if (
+                    y + 1 < worldTopLeft.y ||
+                    y - 1 > worldBottomRight.y
                     ) {
-                        continue;
-                    };
-                    for (int x = 0; x < currentGrid[y].size(); x++) {
-                        if (
-                            x + 1 < worldTopLeft.x ||
-                            x - 1 > worldBottomRight.x ||
-                            getCellState(currentGrid[y][x]) == 0
+                continue;
+            };
+            for (int x = 0; x < currentGrid[y].size(); x++) {
+                // Skip drawing cells that are outside the visible area or are dead
+                if (
+                        x + 1 < worldTopLeft.x ||
+                        x - 1 > worldBottomRight.x ||
+                        getCellState(currentGrid[y][x]) == 0
                         ) {
-                            continue;
-                        };
-                        DrawPixel(x, y, PALEJADE);
-                    };
+                    continue;
                 };
-            EndMode2D();
+                // Draw the cell
+                DrawPixel(x, y, PALEJADE);
+            };
+        };
+        // End 2D mode
+        EndMode2D();
 
-            DrawTextureRec(
+        // Draw the menu button
+        DrawTextureRec(
                 menuButton,
                 menuButtonSource,
                 (Vector2){menuButtonBounds.x, menuButtonBounds.y},
                 WHITE
-            );
+        );
 
-            DrawTextureRec(
+        // Draw the menu bar
+        DrawTextureRec(
                 menuBar,
                 menuBarSource,
                 (Vector2){menuBarBounds.x, menuBarBounds.y},
                 WHITE
-            );
-            Texture currentTexture = {};
-            switch (play) {
-                case false: currentTexture = menuBarPlay; break;
-                case true: currentTexture = menuBarPause; break;
-            }
-            DrawTextureRec(
+        );
+
+        // Determine the texture to use for the play/pause button
+        Texture currentTexture = {};
+        switch (play) {
+            case false: currentTexture = menuBarPlay; break;
+            case true: currentTexture = menuBarPause; break;
+        }
+
+        // Draw the play/pause button
+        DrawTextureRec(
                 currentTexture,
                 menuBarPlayPauseSource,
                 (Vector2){menuBarPlayPauseBounds.x, menuBarPlayPauseBounds.y},
                 WHITE
-            );
-            DrawTextEx(
+        );
+
+        // Draw the current mouse position and zoom level
+        DrawTextEx(
                 jetBrainsMono,
                 TextFormat(
-                    "x: %.2f",
-                    GetScreenToWorld2D(GetMousePosition(), camera).x
+                        "x: %.2f",
+                        GetScreenToWorld2D(GetMousePosition(), camera).x
                 ),
                 (Vector2){92.0f, 600.1f},
                 26,
                 0,
                 MIDNIGHTBLACK
-            );
-            DrawTextEx(
+        );
+        DrawTextEx(
                 jetBrainsMono,
                 TextFormat(
-                    "y: %.2f",
-                    GetScreenToWorld2D(GetMousePosition(), camera).y
+                        "y: %.2f",
+                        GetScreenToWorld2D(GetMousePosition(), camera).y
                 ),
                 (Vector2){92.0f, 645.8f},
                 26,
                 0,
                 MIDNIGHTBLACK
-            );
-            DrawTextEx(
+        );
+        DrawTextEx(
                 jetBrainsMono,
                 TextFormat(
-                    "zoom: %.2f",
-                    camera.zoom 
+                        "zoom: %.2f",
+                        camera.zoom
                 ),
                 (Vector2){255.9f, 600.1f},
                 26,
                 0,
                 MIDNIGHTBLACK
-            );
-            DrawTextEx(
+        );
+        DrawTextEx(
                 jetBrainsMono,
                 TextFormat(
-                    "delta-time: %d",
-                    maxTicks
+                        "delta-time: %d",
+                        maxTicks
                 ),
                 (Vector2){255.9f, 648.8f},
                 26,
                 0,
                 MIDNIGHTBLACK
-            );
+        );
 
-            switch (currentMenu) {
-                case 0:
-                    renderMainMenu(
+        // Render the current menu
+        switch (currentMenu) {
+            case 0:
+                renderMainMenu(
                         jetBrainsMono
-                    );
-                    break;
-                case 1:
-                    displayGenerateGridMenu(
+                );
+                break;
+            case 1:
+                displayGenerateGridMenu(
                         generateNewGridBounds,
                         widthEntryBounds,
                         heightEntryBounds,
@@ -464,21 +493,23 @@ int main() {
                         currentHeight,
                         currentDensity,
                         jetBrainsMono
-                    );
-                    break;
-                case 2:
-                    displayLoadGrid(jetBrainsMono, currentGridName);
-                    break;
-                case 3:
-                    displaySaveGrid(jetBrainsMono, currentGridName);
-                    break;
-            };
+                );
+                break;
+            case 2:
+                displayLoadGrid(jetBrainsMono, currentGridName);
+                break;
+            case 3:
+                displaySaveGrid(jetBrainsMono, currentGridName);
+                break;
+        };
 
-            if (drawFPS) DrawFPS(900, 0);
+        // Draw the FPS counter if enabled
+        if (drawFPS) DrawFPS(900, 0);
+// End drawing to the screen
         EndDrawing();
-    };
 
-    CloseWindow();
+// Close the window and end the program
+        CloseWindow();
 
-    return 0;
-}
+        return 0;
+        ```
