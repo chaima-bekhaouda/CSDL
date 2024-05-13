@@ -164,8 +164,7 @@ int main() {
                             createNewGridBounds
                             ) &&
                             currentWidth != 0 &&
-                            currentHeight != 0 &&
-                            currentDensity != 0
+                            currentHeight != 0
                         ) {
                             clickGenerateGridButton(
                                 play,

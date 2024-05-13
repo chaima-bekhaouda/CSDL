@@ -64,8 +64,7 @@ void typingInHeightEntry(int& heightDigits, int& currentHeight) {
 }
 
 void typingInDensityEntry(int& currentDensity) {
-    int minKey;
-    currentDensity == 0 ? minKey = 49 : minKey = 48;
+    int minKey = 48;
     int pressedKey = GetKeyPressed();
     if (
         minKey <= pressedKey &&
@@ -209,25 +208,14 @@ void displayGenerateGridMenu(
         MINTYTEAL
     );
     DrawRectangleRounded(densityEntryBounds, 33, 10, MINTYTEAL);
-    if (currentDensity == 0) {
-        DrawTextEx(
-            jetBrainsMono,
-            "...",
-            Vector2{496, 389},
-            26,
-            0,
-            PALEJADE
-        );
-    } else {
-        DrawTextEx(
-            jetBrainsMono,
-            TextFormat("%d%%", currentDensity),
-            Vector2{493.3, 389.9},
-            26,
-            0,
-            MIDNIGHTBLACK
-        );
-    };
+    DrawTextEx(
+        jetBrainsMono,
+        TextFormat("%d%%", currentDensity),
+        Vector2{493.3, 389.9},
+        26,
+        0,
+        MIDNIGHTBLACK
+    );
     DrawRectangleRounded(createNewGridBounds, 33, 10, MINTYTEAL);
     DrawTextEx(
         jetBrainsMono,
