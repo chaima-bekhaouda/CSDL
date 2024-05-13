@@ -1,134 +1,100 @@
-#include <string>
-#include <fstream>
-#include <sstream>
 #include <vector>
 #include "gol_elements.hpp"
-#include "gol_algorithm.hpp"
 
-// Checks if a file exists
-bool doesFileExist(std::string fileName) {
-    bool fileExists;
-
-    std::ifstream file("cells/" + fileName + ".cells");
-    fileExists = file.is_open();
-    file.close();
-
-    return fileExists;
+// Sets the least significant bit of the cell to 1, indicating it's alive
+void setCellAlive(unsigned char& cell) {
+    cell |= 0x01;
 }
 
-// Checks if all lines in the file have the same length
-bool areLinesEven(std::string fileName) {
-    int lastLineLength = - 1;
-    std::string line;
-
-    std::ifstream file("cells/" + fileName + ".cells");
-    while (getline(file, line)) {
-        if (line[0] == '!') {
-            continue;
-        };
-        if ((line.length() != lastLineLength) && (lastLineLength != -1)) {
-            return false;
-        };
-        lastLineLength = line.length();
-    };
-    file.close();
-
-    return true;
+// Sets the least significant bit of the cell to 0, indicating it's dead
+void setCellDead(unsigned char& cell) {
+    cell &= 0xFE;
 }
 
-// Checks if all characters in the file are valid (either '.' or 'O')
-bool areCharactersValid(std::string fileName) {
-    std::string line;
-
-    std::ifstream file("cells/" + fileName + ".cells");
-    while (getline(file, line)) {
-        if (line[0] == '!') {
-            continue;
-        };
-        for (char character : line) {
-            if ((character != '.') && (character != 'O')) {
-                return false;
-            };
-        };
-    };
-    file.close();
-
-    return true;
+// Returns the state of the cell (alive or dead)
+bool getCellState(unsigned char& cell) {
+    return cell & 1;
 }
 
-// Saves the current state of the grid to a file
-void saveGrid(
-        std::string fileName, std::vector<std::vector<unsigned char>> grid
+// Increases the neighbor count of the cell by 1
+void addNeighborCount(unsigned char& cell) {
+    cell += 0x02;
+}
+
+// Decreases the neighbor count of the cell by 1
+void subNeighborCount(unsigned char& cell) {
+    cell -= 0x02;
+}
+
+// Returns the neighbor count of the cell
+unsigned char getNeighborCount(unsigned char& cell) {
+    return cell >> 1;
+}
+
+// Increases the neighbor count of the cells surrounding the given cell
+void addNeighborCountToNeighbors(
+        std::vector<std::vector<unsigned char>>& nextGrid,
+        unsigned int originY,
+        unsigned int originX
 ) {
-    std::string textFileContent = "!" + fileName + "\n";
-    for (int y = 0; y < grid.size(); y++) {
-        for (int x = 0; x < grid.size(); x++) {
-            switch (getCellState(grid[y][x])) {
-                case 0: textFileContent += '.'; break;
-                case 1: textFileContent += 'O'; break;
+    // Iterate over the 3x3 grid centered on the cell
+    for (int y = -1; y <= 1; y++) {
+        if (originY + y < 0 || originY + y >= nextGrid.size()) continue;
+        for (int x = -1; x <= 1; x++) {
+            if (originX + x < 0 || originX +x >= nextGrid[originY + y].size()) {
+                continue;
             };
+            if (y == 0 && x == 0) continue; // Skip the center cell
+            addNeighborCount(nextGrid[originY + y][originX + x]);
         };
-        textFileContent += '\n';
     };
-
-    std::ofstream file("cells/" + fileName + ".cells");
-    file << textFileContent;
-    file.close();
 }
 
-// Reads the grid from a file and returns it as a string
-std::string readGridFile(std::string fileName) {
-    std::stringstream fileContent;
-    std::string line;
-    int lastLineLength = -1;
-
-    std::ifstream file("cells/" + fileName + ".cells");
-
-    while (getline(file, line)) {
-        if (line[0] == '!') {
-            continue;
-        }
-        fileContent << line << '\n';
-        lastLineLength = line.length();
+// Decreases the neighbor count of the cells surrounding the given cell
+void subNeighborCountToNeighbors(
+        std::vector<std::vector<unsigned char>>& nextGrid,
+        unsigned int originY,
+        unsigned int originX
+) {
+    // Similar to addNeighborCountToNeighbors, but decreases the count
+    for (int y = -1; y <= 1; y++) {
+        if (originY + y < 0 || originY + y >= nextGrid.size()) continue;
+        for (int x = -1; x <= 1; x++) {
+            if (originX + x < 0 || originX +x >= nextGrid[originY + y].size()) {
+                continue;
+            };
+            if (y == 0 && x == 0) continue;
+            subNeighborCount(nextGrid[originY + y][originX + x]);
+        };
     };
-
-    return fileContent.str();
 }
 
-// Converts a string representation of a grid into a 2D vector
-std::vector<std::vector<unsigned char>> loadGrid(std::string gridString) {
-    std::stringstream dimensionsStringStream (gridString);
-    std::string line;
+// Iterates over the grid to update the state of each cell for the next generation
+void iterateOverGrid(
+        std::vector<std::vector<unsigned char>>& currentGrid,
+        std::vector<std::vector<unsigned char>>& nextGrid
+) {
+    // Iterate over each cell in the grid
+    for (int y = 0; y < currentGrid.size(); y++) {
+        for (int x = 0; x < currentGrid[y].size(); x++) {
+            if (currentGrid[y][x] == 0) continue;
 
-    int gridRows = 1;
-    int gridColumns = 0;
-    while (std::getline(dimensionsStringStream, line)) {
-        if (gridColumns == 0) {
-            for (char c : line) {
-                gridColumns++;
+            unsigned char cellState = getCellState(currentGrid[y][x]);
+            unsigned char neighborCount ;
+            neighborCount = getNeighborCount(currentGrid[y][x]);
+
+            // If the cell is alive and has less than 2 or more than 3 neighbors, it dies
+            if ((neighborCount < 2 || neighborCount > 3) && cellState == 1) {
+                setCellDead(nextGrid[y][x]);
+                subNeighborCountToNeighbors(nextGrid, y, x);
             }
-        }
-        gridRows++;
-    };
-
-    std::vector<std::vector<unsigned char>> grid (
-            gridRows, std::vector<unsigned char> (gridColumns, 0)
-    );
-
-    std::stringstream insertStringStream (gridString);
-    int y = 0;
-    int x;
-    while (std::getline(insertStringStream, line)) {
-        x = 0;
-        for (char c : line) {
-            if (c == 'O') {
-                setCellAlive(grid[y][x]);
-                addNeighborCountToNeighbors(grid, y, x);
+                // If the cell is dead and has exactly 3 neighbors, it becomes alive
+            else if (neighborCount == 3 && cellState == 0) {
+                setCellAlive(nextGrid[y][x]);
+                addNeighborCountToNeighbors(nextGrid, y, x);
             };
-            x++;
         };
-        y++;
     };
-
-    return grid;
+    // The next grid becomes the current grid for the next iteration
+    currentGrid = nextGrid;
 }

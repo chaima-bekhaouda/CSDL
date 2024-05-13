@@ -5,7 +5,7 @@
 #include "gol_elements.hpp"
 #include "gol_algorithm.hpp"
 
-
+// Checks if a file exists
 bool doesFileExist(std::string fileName) {
     bool fileExists;
 
@@ -16,6 +16,7 @@ bool doesFileExist(std::string fileName) {
     return fileExists;
 }
 
+// Checks if all lines in the file have the same length
 bool areLinesEven(std::string fileName) {
     int lastLineLength = - 1;
     std::string line;
@@ -35,6 +36,7 @@ bool areLinesEven(std::string fileName) {
     return true;
 }
 
+// Checks if all characters in the file are valid (either '.' or 'O')
 bool areCharactersValid(std::string fileName) {
     std::string line;
 
@@ -54,8 +56,9 @@ bool areCharactersValid(std::string fileName) {
     return true;
 }
 
+// Saves the current state of the grid to a file
 void saveGrid(
-    std::string fileName, std::vector<std::vector<unsigned char>> grid
+        std::string fileName, std::vector<std::vector<unsigned char>> grid
 ) {
     std::string textFileContent = "!" + fileName + "\n";
     for (int y = 0; y < grid.size(); y++) {
@@ -73,6 +76,7 @@ void saveGrid(
     file.close();
 }
 
+// Reads the grid from a file and returns it as a string
 std::string readGridFile(std::string fileName) {
     std::stringstream fileContent;
     std::string line;
@@ -91,6 +95,7 @@ std::string readGridFile(std::string fileName) {
     return fileContent.str();
 }
 
+// Converts a string representation of a grid into a 2D vector
 std::vector<std::vector<unsigned char>> loadGrid(std::string gridString) {
     std::stringstream dimensionsStringStream (gridString);
     std::string line;
@@ -107,7 +112,7 @@ std::vector<std::vector<unsigned char>> loadGrid(std::string gridString) {
     };
 
     std::vector<std::vector<unsigned char>> grid (
-        gridRows, std::vector<unsigned char> (gridColumns, 0)
+            gridRows, std::vector<unsigned char> (gridColumns, 0)
     );
 
     std::stringstream insertStringStream (gridString);
