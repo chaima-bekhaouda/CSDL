@@ -179,7 +179,22 @@ int main() {
                                 camera,
                                 gridLineColor
                             );
-                        }
+                        };
+                        break;
+                    case 3:
+                        if (CheckCollisionPointRec(
+                            GetMousePosition(),
+                            saveCurrentGameBounds
+                            )
+                        ) {
+                            clickSaveGridButton(
+                                saveGrid,
+                                currentGridName,
+                                currentGrid,
+                                currentMenu
+                            );
+                            break;
+                        };
                 }
             } else {
                 Vector2 clickPos = GetScreenToWorld2D(
@@ -236,10 +251,10 @@ int main() {
             };
         };
 
-        if (IsKeyPressed(KEY_F)) {
+        if (IsKeyPressed(KEY_F) && currentMenu != 3) {
             drawFPS ? drawFPS = false : drawFPS = true;
         }
-        if (IsKeyPressed(KEY_R)) {
+        if (IsKeyPressed(KEY_R) && currentMenu != 3) {
             camera.target = (Vector2){
                 currentGrid[0].size() / 2.0f,
                 currentGrid.size() / 2.0f
@@ -257,7 +272,7 @@ int main() {
                 * 255.0f
             );
         };
-        if (IsKeyPressed(KEY_SPACE)) {
+        if (IsKeyPressed(KEY_SPACE) && currentMenu != 3) {
             switch (play) {
                 case false: play = true; break;
                 case true: play = false; break;
