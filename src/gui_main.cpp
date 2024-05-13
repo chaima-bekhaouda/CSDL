@@ -1,15 +1,20 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <string>
+
 #include "gol_elements.hpp"
 #include "gol_algorithm.hpp"
 #include "gol_grid_generation.hpp"
 #include "gol_file_handling.hpp"
+
 #include "raylib.h"
 #include "gui_colors.hpp"
 #include "gui_main_menu.hpp"
 #include "gui_generate_grid.hpp"
 #include "gui_save_grid.hpp"
+#include <iostream>
+
 #define MAX_ZOOM 60.0f
 
 
@@ -85,6 +90,9 @@ int main() {
     int currentHeight = 0;
     int heightDigits = 0;
     int currentDensity = 0;
+
+
+    std::string currentGridName = "";
 
 
     Camera2D camera;
@@ -218,6 +226,14 @@ int main() {
                 )
             ) {
                 typingInDensityEntry(currentDensity);
+            };
+        } else if (currentMenu == 3) {
+            if (CheckCollisionPointRec(
+                GetMousePosition(),
+                gridNameEntryBounds
+                )
+            ) {
+                typeIntoGridNameEntry(currentGridName);
             };
         };
 
@@ -406,7 +422,7 @@ int main() {
                     );
                     break;
                 case 3:
-                    displaySaveGrid(jetBrainsMono);
+                    displaySaveGrid(jetBrainsMono, currentGridName);
                     break;
             };
 

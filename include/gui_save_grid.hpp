@@ -1,3 +1,4 @@
+#include <string>
 #include "raylib.h"
 #include "gui_colors.hpp"
 
@@ -7,4 +8,6 @@ extern Rectangle gridNameEntryBounds;
 extern Rectangle saveCurrentGameBounds;
 
 
-void displaySaveGrid(Font& jetBrainsMono);
+void typeIntoGridNameEntry(std::string& currentGridName);
+
+void displaySaveGrid(Font& jetBrainsMono, std::string& currentGridName);
