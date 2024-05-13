@@ -106,7 +106,7 @@ int main() {
     camera.zoom = 10.0f;
 
     Color gridLineColor = DEEPOCEANBLUE;
-    gridLineColor.a = (int)((camera.zoom - 1.0f) / (MAX_ZOOM - 1.0f) * 255.0f);
+    gridLineColor.a = (int)((camera.zoom) / (MAX_ZOOM) * 255.0f);
 
     while (!WindowShouldClose()) {
         if (play) {
@@ -332,8 +332,8 @@ int main() {
                 camera.zoom = MAX_ZOOM;
             };
             gridLineColor.a = (int)(
-                (camera.zoom - 1.0f)
-                / (MAX_ZOOM - 1.0f)
+                (camera.zoom)
+                / (MAX_ZOOM)
                 * 255.0f
             );
         } else {
