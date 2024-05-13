@@ -1,4 +1,4 @@
-=// Including the necessary libraries and headers
+// Including the necessary libraries and headers
 #include <random> // For generating random numbers
 #include <ctime> // For getting the current time
 #include <vector> // For using vector data structure
