@@ -3,26 +3,26 @@
 #include "raylib.h"
 #include "gui_colors.hpp"
 
-
+// Define the bounds for the grid and entry fields
 Rectangle generateNewGridBounds = {344, 154.3, 336, 412.7};
 Rectangle widthEntryBounds = {442.7, 205.1, 137.8, 44.1};
 Rectangle heightEntryBounds = {442.7, 291.6, 137.8, 44.1};
 Rectangle densityEntryBounds = {442.7, 378.1, 142.2, 44.1};
 Rectangle createNewGridBounds = {428.4, 464.1, 166.5, 44.1};
 
-
+// Function to handle typing in the width entry field
 void typingInWidthEntry(int& widthDigits, int& currentWidth) {
     int minKey;
     widthDigits == 0 ? minKey = 49 : minKey = 48;
     int pressedKey = GetKeyPressed();
     if (
-        minKey <= pressedKey &&
-        pressedKey <= 57 &&
-        widthDigits < 6
-    ) {
+            minKey <= pressedKey &&
+            pressedKey <= 57 &&
+            widthDigits < 6
+            ) {
         int pressedDigit = pressedKey - 48;
         currentWidth = (int) (
-            currentWidth * 10 + pressedDigit
+                currentWidth * 10 + pressedDigit
         );
         widthDigits++;
     } else if (pressedKey == KEY_BACKSPACE) {
@@ -37,18 +37,19 @@ void typingInWidthEntry(int& widthDigits, int& currentWidth) {
     };
 }
 
+// Function to handle typing in the height entry field
 void typingInHeightEntry(int& heightDigits, int& currentHeight) {
     int minKey;
     heightDigits == 0 ? minKey = 49 : minKey = 48;
     int pressedKey = GetKeyPressed();
     if (
-        minKey <= pressedKey &&
-        pressedKey <= 57 &&
-        heightDigits < 6
-    ) {
+            minKey <= pressedKey &&
+            pressedKey <= 57 &&
+            heightDigits < 6
+            ) {
         int pressedDigit = pressedKey - 48;
         currentHeight = (int) (
-            currentHeight * 10 + pressedDigit
+                currentHeight * 10 + pressedDigit
         );
         heightDigits++;
     } else if (pressedKey == KEY_BACKSPACE) {
@@ -63,16 +64,17 @@ void typingInHeightEntry(int& heightDigits, int& currentHeight) {
     };
 }
 
+// Function to handle typing in the density entry field
 void typingInDensityEntry(int& currentDensity) {
     int minKey = 48;
     int pressedKey = GetKeyPressed();
     if (
-        minKey <= pressedKey &&
-        pressedKey <= 57
-    ) {
+            minKey <= pressedKey &&
+            pressedKey <= 57
+            ) {
         int pressedDigit = pressedKey - 48;
         int newDensity = (int) (
-            currentDensity * 10 + pressedDigit
+                currentDensity * 10 + pressedDigit
         );
         if (newDensity <= 100) {
             currentDensity = newDensity;
@@ -87,142 +89,144 @@ void typingInDensityEntry(int& currentDensity) {
     };
 }
 
+// Function to handle clicking the generate grid button
 void clickGenerateGridButton(
-    bool& play,
-    int& currentMenu,
-    int& currentWidth,
-    int& currentHeight,
-    int& currentDensity,
-    float MAX_ZOOM,
-    std::function<std::vector<std::vector<unsigned char>> (int, int, double)>
-    generateGrid,
-    std::vector<std::vector<unsigned char>>& currentGrid,
-    std::vector<std::vector<unsigned char>>& nextGrid,
-    Camera2D& camera,
-    Color& gridLineColor
+        bool& play,
+        int& currentMenu,
+        int& currentWidth,
+        int& currentHeight,
+        int& currentDensity,
+        float MAX_ZOOM,
+        std::function<std::vector<std::vector<unsigned char>> (int, int, double)>
+generateGrid,
+std::vector<std::vector<unsigned char>>& currentGrid,
+        std::vector<std::vector<unsigned char>>& nextGrid,
+Camera2D& camera,
+        Color& gridLineColor
 ) {
-    play = false;
+play = false;
 
-    currentGrid = generateGrid(
+currentGrid = generateGrid(
         currentHeight,
         currentWidth,
         (double) currentDensity / 100
-    );
-    nextGrid = currentGrid;
-    camera.target = (Vector2){
+);
+nextGrid = currentGrid;
+camera.target = (Vector2){
         currentGrid[0].size() / 2.0f,
         currentGrid.size() / 2.0f
-    };
-    camera.offset = (Vector2){
+};
+camera.offset = (Vector2){
         GetScreenWidth() / 2.0f,
         GetScreenHeight() / 2.0f
-    };
-    camera.rotation = 0.0f;
-    camera.zoom = 10.0f;
+};
+camera.rotation = 0.0f;
+camera.zoom = 10.0f;
 
-    gridLineColor.a = (int)(
+gridLineColor.a = (int)(
         (camera.zoom - 1.0f)
         / (MAX_ZOOM - 1.0f)
         * 255.0f
-    );
-    currentMenu = -1;
+);
+currentMenu = -1;
 }
 
+// Function to display the generate grid menu
 void displayGenerateGridMenu(
-    Rectangle& generateNewGridBounds,
-    Rectangle& widthEntryBounds,
-    Rectangle& heightEntryBounds,
-    Rectangle& densityEntryBounds,
-    Rectangle& createNewGridBounds,
-    int& currentWidth,
-    int& currentHeight,
-    int& currentDensity,
-    Font& jetBrainsMono
+        Rectangle& generateNewGridBounds,
+        Rectangle& widthEntryBounds,
+        Rectangle& heightEntryBounds,
+        Rectangle& densityEntryBounds,
+        Rectangle& createNewGridBounds,
+        int& currentWidth,
+        int& currentHeight,
+        int& currentDensity,
+        Font& jetBrainsMono
 ) {
     DrawRectangleRec(generateNewGridBounds, MIDNIGHTBLACK);
     DrawRectangleLinesEx(
-        generateNewGridBounds, 4, DEEPOCEANBLUE
+            generateNewGridBounds, 4, DEEPOCEANBLUE
     );
     DrawTextEx(
-        jetBrainsMono,
-        "Width",
-        Vector2{486, 177.6},
-        26,
-        0,
-        MINTYTEAL
+            jetBrainsMono,
+            "Width",
+            Vector2{486, 177.6},
+            26,
+            0,
+            MINTYTEAL
     );
     DrawRectangleRounded(widthEntryBounds, 33, 10, MINTYTEAL);
     if (currentWidth == 0) {
         DrawTextEx(
-            jetBrainsMono,
-            "...",
-            Vector2{496, 217.8},
-            26,
-            0,
-            PALEJADE
+                jetBrainsMono,
+                "...",
+                Vector2{496, 217.8},
+                26,
+                0,
+                PALEJADE
         );
     } else {
         DrawTextEx(
-            jetBrainsMono,
-            TextFormat("%d", currentWidth),
-            Vector2{474, 214},
-            26,
-            0,
-            MIDNIGHTBLACK
+                jetBrainsMono,
+                TextFormat("%d", currentWidth),
+                Vector2{474, 214},
+                26,
+                0,
+                MIDNIGHTBLACK
         );
     };
     DrawTextEx(
-        jetBrainsMono,
-        "Height",
-        Vector2{480, 265.9},
-        26,
-        0,
-        MINTYTEAL
+            jetBrainsMono,
+            "Height",
+            Vector2{480, 265.9},
+            26,
+            0,
+            MINTYTEAL
     );
     DrawRectangleRounded(heightEntryBounds, 33, 10, MINTYTEAL);
     if (currentHeight == 0) {
         DrawTextEx(
-            jetBrainsMono,
-            "...",
-            Vector2{496, 303.4},
-            26,
-            0,
-            PALEJADE
+                jetBrainsMono,
+                "...",
+                Vector2{496, 303.4},
+                26,
+                0,
+                PALEJADE
         );
     } else {
         DrawTextEx(
-            jetBrainsMono,
-            TextFormat("%d", currentHeight),
-            Vector2{474, 299.6},
-            26,
-            0,
-            MIDNIGHTBLACK
+                jetBrainsMono,
+                TextFormat("%d", currentHeight),
+                Vector2{474, 299.6},
+                26,
+                0,
+                MIDNIGHTBLACK
         );
     };
     DrawTextEx(
-        jetBrainsMono,
-        "Density",
-        Vector2{476, 352.7},
-        26,
-        0,
-        MINTYTEAL
+            jetBrainsMono,
+            "Density",
+            Vector2{476, 352.7},
+            26,
+            0,
+            MINTYTEAL
     );
     DrawRectangleRounded(densityEntryBounds, 33, 10, MINTYTEAL);
     DrawTextEx(
-        jetBrainsMono,
-        TextFormat("%d%%", currentDensity),
-        Vector2{493.3, 389.9},
-        26,
-        0,
-        MIDNIGHTBLACK
+            jetBrainsMono,
+            TextFormat("%d%%", currentDensity),
+            Vector2{493.3, 389.9},
+            26,
+            0,
+            MIDNIGHTBLACK
     );
     DrawRectangleRounded(createNewGridBounds, 33, 10, MINTYTEAL);
     DrawTextEx(
-        jetBrainsMono,
-        "Create new grid",
-        Vector2{429, 473},
-        26,
-        0,
-        MIDNIGHTBLACK
+            jetBrainsMono,
+            "Create new grid",
+            Vector2{429, 473},
+            26,
+            0,
+            MIDNIGHTBLACK
     );
-}
+} // Function to display the generate grid menu
