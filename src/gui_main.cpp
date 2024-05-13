@@ -21,7 +21,7 @@
 
 int main() {
     std::vector<std::vector<unsigned char>> currentGrid = loadGrid(
-        readGridFile("default.cells")
+        readGridFile("default")
     );
     std::vector<std::vector<unsigned char>> nextGrid = currentGrid;
 
@@ -182,6 +182,28 @@ int main() {
                             );
                         };
                         break;
+                    case 2:
+                        if (CheckCollisionPointRec(
+                            GetMousePosition(),
+                            loadGridButtonBounds
+                        )
+                        ) {
+                            clickLoadGridButton(
+                                doesFileExist,
+                                areLinesEven,
+                                areCharactersValid,
+                                readGridFile,
+                                loadGrid,
+                                currentGridName,
+                                currentGrid,
+                                nextGrid,
+                                currentMenu,
+                                camera,
+                                gridLineColor,
+                                MAX_ZOOM
+                            );
+                        };
+                        break;
                     case 3:
                         if (CheckCollisionPointRec(
                             GetMousePosition(),
@@ -242,6 +264,14 @@ int main() {
             ) {
                 typingInDensityEntry(currentDensity);
             };
+        } else if (currentMenu == 2) {
+            if (CheckCollisionPointRec(
+                GetMousePosition(),
+                loadGridNameEntryBounds
+                )
+            ) {
+                typeIntoLoadGridNameEntry(currentGridName);
+            };
         } else if (currentMenu == 3) {
             if (CheckCollisionPointRec(
                 GetMousePosition(),
@@ -252,10 +282,10 @@ int main() {
             };
         };
 
-        if (IsKeyPressed(KEY_F) && currentMenu != 3) {
+        if (IsKeyPressed(KEY_F) && currentMenu != 3 && currentMenu != 2) {
             drawFPS ? drawFPS = false : drawFPS = true;
         }
-        if (IsKeyPressed(KEY_R) && currentMenu != 3) {
+        if (IsKeyPressed(KEY_R) && currentMenu != 3 && currentMenu != 2) {
             camera.target = (Vector2){
                 currentGrid[0].size() / 2.0f,
                 currentGrid.size() / 2.0f
@@ -437,7 +467,7 @@ int main() {
                     );
                     break;
                 case 2:
-                    displayLoadGrid(jetBrainsMono);
+                    displayLoadGrid(jetBrainsMono, currentGridName);
                     break;
                 case 3:
                     displaySaveGrid(jetBrainsMono, currentGridName);

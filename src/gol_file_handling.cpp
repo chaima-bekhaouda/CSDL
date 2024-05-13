@@ -78,7 +78,7 @@ std::string readGridFile(std::string fileName) {
     std::string line;
     int lastLineLength = -1;
 
-    std::ifstream file("cells/" + fileName);
+    std::ifstream file("cells/" + fileName + ".cells");
 
     while (getline(file, line)) {
         if (line[0] == '!') {
