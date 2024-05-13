@@ -1,18 +1,18 @@
-#include <string>
-#include <vector>
-#include <functional>
-#include "raylib.h"
-#include "gui_colors.hpp"
-#include <iostream>
+#include <string>// Include the string library for string manipulation
+#include <vector>// Include the vector library for vector data structure
+#include <functional>// Include the functional library for function objects and operations
+#include "raylib.h"// Include the raylib header file for game development
+#include "gui_colors.hpp"// Include the gui_colors header file for GUI color definitions
+#include <iostream>// Include the iostream library for input/output stream
 
-#define MAX_GRID_NAME_SIZE 24
+#define MAX_GRID_NAME_SIZE 24 // Define the maximum size of the grid name
 
-
+// Define the bounds for the load grid, name entry and button
 Rectangle loadGridBounds = {344, 229.8, 336, 258.4};
 Rectangle loadGridNameEntryBounds = {365.6, 302.4, 292.3, 44.1};
 Rectangle loadGridButtonBounds = {404.2, 387.8, 216, 44.1};
 
-
+// Function to handle typing into the load grid name entry
 void typeIntoLoadGridNameEntry(std::string& currentGridName) {
     if (IsKeyPressed(KEY_BACKSPACE) && currentGridName.size() != 0) {
         currentGridName.pop_back();
@@ -31,6 +31,7 @@ void typeIntoLoadGridNameEntry(std::string& currentGridName) {
     currentGridName.push_back(pressedChar);
 }
 
+// Function to handle clicking the load grid button
 void clickLoadGridButton(
     std::function<bool (std::string)> doesFileExist,
     std::function<bool (std::string)> areLinesEven,
