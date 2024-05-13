@@ -7,4 +7,4 @@ extern Rectangle fileListBounds;
 extern Rectangle loadGridButtonBounds;
 
 
-void displayLoadGrid();
+void displayLoadGrid(Font& jetBrainsMono);

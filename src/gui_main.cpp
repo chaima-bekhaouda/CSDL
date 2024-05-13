@@ -437,7 +437,7 @@ int main() {
                     );
                     break;
                 case 2:
-                    displayLoadGrid();
+                    displayLoadGrid(jetBrainsMono);
                     break;
                 case 3:
                     displaySaveGrid(jetBrainsMono, currentGridName);
